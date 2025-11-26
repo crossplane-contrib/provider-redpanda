@@ -15,3 +15,61 @@ spec:
     name: example-topic
     partitionCount: 3
     replicationFactor: 3
+
+---
+
+apiVersion: redpanda.redpanda.crossplane.io/v1alpha1
+kind: Cluster
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/topic
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    cloudProvider: aws
+    clusterType: dedicated
+    connectionType: public
+    name: example-cluster
+    networkId: ${redpanda_network.example.id}
+    region: us-west-2
+    resourceGroupId: ${redpanda_resource_group.example.id}
+    throughputTier: tier-1-aws
+    zones:
+    - us-west-2a
+    - us-west-2b
+    - us-west-2c
+
+---
+
+apiVersion: redpanda.redpanda.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/topic
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    cidrBlock: 10.0.0.0/20
+    cloudProvider: aws
+    clusterType: dedicated
+    name: example-network
+    region: us-west-2
+    resourceGroupId: ${redpanda_resource_group.example.id}
+
+---
+
+apiVersion: resource.redpanda.crossplane.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/topic
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: example-resource-group

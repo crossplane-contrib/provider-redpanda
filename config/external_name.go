@@ -7,8 +7,16 @@ import (
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"redpanda_topic": config.IdentifierFromProvider,
+	"redpanda_acl":                 config.IdentifierFromProvider,
+	"redpanda_cluster":             config.IdentifierFromProvider,
+	"redpanda_network":             config.IdentifierFromProvider,
+	"redpanda_resource_group":      config.IdentifierFromProvider,
+	"redpanda_role_assignment":     config.IdentifierFromProvider,
+	"redpanda_schema":              config.IdentifierFromProvider,
+	"redpanda_schema_registry_acl": config.IdentifierFromProvider,
+	"redpanda_serverless_cluster":  config.IdentifierFromProvider,
+	"redpanda_topic":               config.IdentifierFromProvider,
+	"redpanda_user":                config.IdentifierFromProvider,
 }
 
 // ExternalNameConfigurations applies all external name configs listed in the

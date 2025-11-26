@@ -7,4 +7,19 @@
 package v1alpha1
 
 // Hub marks this type as a conversion hub.
+func (tr *ACL) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Cluster) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Network) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *Schema) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Topic) Hub() {}
+
+// Hub marks this type as a conversion hub.
+func (tr *User) Hub() {}

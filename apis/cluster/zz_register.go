@@ -11,6 +11,10 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 
 	v1alpha1 "github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1"
+	v1alpha1resource "github.com/crossplane-contrib/provider-redpanda/apis/cluster/resource/v1alpha1"
+	v1alpha1role "github.com/crossplane-contrib/provider-redpanda/apis/cluster/role/v1alpha1"
+	v1alpha1schema "github.com/crossplane-contrib/provider-redpanda/apis/cluster/schema/v1alpha1"
+	v1alpha1serverless "github.com/crossplane-contrib/provider-redpanda/apis/cluster/serverless/v1alpha1"
 	v1alpha1cluster "github.com/crossplane-contrib/provider-redpanda/apis/cluster/v1alpha1"
 	v1beta1 "github.com/crossplane-contrib/provider-redpanda/apis/cluster/v1beta1"
 )
@@ -19,6 +23,10 @@ func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
+		v1alpha1resource.SchemeBuilder.AddToScheme,
+		v1alpha1role.SchemeBuilder.AddToScheme,
+		v1alpha1schema.SchemeBuilder.AddToScheme,
+		v1alpha1serverless.SchemeBuilder.AddToScheme,
 		v1alpha1cluster.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 	)

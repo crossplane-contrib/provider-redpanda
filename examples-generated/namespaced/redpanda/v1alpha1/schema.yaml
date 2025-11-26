@@ -1,0 +1,119 @@
+apiVersion: redpanda.redpanda.m.crossplane.io/v1alpha1
+kind: Schema
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/schema
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    clusterId: ${redpanda_cluster.example.id}
+    passwordSecretRef:
+      key: example-key
+      name: example-secret
+    schema: |-
+      ${jsonencode({
+          type = "record"
+          name = "User"
+          fields = [
+            {
+              name = "id"
+              type = "long"
+            },
+            {
+              name = "username"
+              type = "string"
+            },
+            {
+              name = "email"
+              type = "string"
+            }
+          ]
+        })}
+    schemaType: AVRO
+    subject: user-value
+    username: example-user
+
+---
+
+apiVersion: redpanda.redpanda.m.crossplane.io/v1alpha1
+kind: Cluster
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/schema
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    cloudProvider: aws
+    clusterType: dedicated
+    connectionType: public
+    name: example-cluster
+    networkId: ${redpanda_network.example.id}
+    region: us-west-2
+    resourceGroupId: ${redpanda_resource_group.example.id}
+    throughputTier: tier-1-aws
+    zones:
+    - us-west-2a
+    - us-west-2b
+    - us-west-2c
+
+---
+
+apiVersion: redpanda.redpanda.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/schema
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    cidrBlock: 10.0.0.0/20
+    cloudProvider: aws
+    clusterType: dedicated
+    name: example-network
+    region: us-west-2
+    resourceGroupId: ${redpanda_resource_group.example.id}
+
+---
+
+apiVersion: resource.redpanda.m.crossplane.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/schema
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: example-resource-group
+
+---
+
+apiVersion: redpanda.redpanda.m.crossplane.io/v1alpha1
+kind: User
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/schema
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    allowDeletion: true
+    clusterApiUrl: ${redpanda_cluster.example.cluster_api_url}
+    mechanism: scram-sha-256
+    name: schema-user
+    passwordSecretRef:
+      key: example-key
+      name: example-secret

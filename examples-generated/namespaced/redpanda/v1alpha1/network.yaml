@@ -1,0 +1,32 @@
+apiVersion: redpanda.redpanda.m.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/network
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    cidrBlock: 10.0.0.0/20
+    cloudProvider: aws
+    clusterType: dedicated
+    name: example-network
+    region: us-west-2
+    resourceGroupId: ${redpanda_resource_group.example.id}
+
+---
+
+apiVersion: resource.redpanda.m.crossplane.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/network
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+  namespace: crossplane-system
+spec:
+  forProvider:
+    name: example-resource-group

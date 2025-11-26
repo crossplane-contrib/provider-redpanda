@@ -1,0 +1,11 @@
+apiVersion: resource.redpanda.crossplane.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: resource/v1alpha1/group
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: example-resource-group

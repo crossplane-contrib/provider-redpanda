@@ -1,0 +1,2242 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.18.0
+  name: clusters.redpanda.redpanda.crossplane.io
+spec:
+  group: redpanda.redpanda.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - redpanda
+    kind: Cluster
+    listKind: ClusterList
+    plural: clusters
+    singular: cluster
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Cluster is the Schema for the Clusters API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ClusterSpec defines the desired state of Cluster
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: |-
+                  DeletionPolicy specifies what will happen to the underlying external
+                  when this managed resource is deleted - either "Delete" or "Orphan" the
+                  external resource.
+                  This field is planned to be deprecated in favor of the ManagementPolicies
+                  field in a future release. Currently, both could be set independently and
+                  non-default values would be honored if the feature flag is enabled.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  allowDeletion:
+                    description: |-
+                      (Boolean) Allows deletion of the cluster. Defaults to false.
+                      Allows deletion of the cluster. Defaults to false.
+                    type: boolean
+                  awsPrivateLink:
+                    description: (Attributes) AWS PrivateLink configuration. (see
+                      below for nested schema)
+                    properties:
+                      allowedPrincipals:
+                        description: |-
+                          (List of String) The ARN of the principals that can access the Redpanda AWS PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                          The ARN of the principals that can access the Redpanda AWS PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                        items:
+                          type: string
+                        type: array
+                      connectConsole:
+                        description: |-
+                          (Boolean) Whether Console is connected via PrivateLink.
+                          Whether Console is connected via PrivateLink.
+                        type: boolean
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether AWS PrivateLink is enabled.
+                        type: boolean
+                    type: object
+                  azurePrivateLink:
+                    description: (Attributes) Azure Private Link configuration. (see
+                      below for nested schema)
+                    properties:
+                      allowedSubscriptions:
+                        description: |-
+                          (List of String) The subscriptions that can access the Redpanda Azure PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                          The subscriptions that can access the Redpanda Azure PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                        items:
+                          type: string
+                        type: array
+                      connectConsole:
+                        description: |-
+                          (Boolean) Whether Console is connected via PrivateLink.
+                          Whether Console is connected in Redpanda Azure Private Link Service.
+                        type: boolean
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether Redpanda Azure Private Link Endpoint Service is enabled.
+                        type: boolean
+                    type: object
+                  cloudProvider:
+                    description: |-
+                      (String) Cloud provider where resources are created.
+                      Cloud provider where resources are created.
+                    type: string
+                  clusterConfiguration:
+                    description: (Attributes) Configuration for the cluster. (see
+                      below for nested schema)
+                    properties:
+                      customPropertiesJson:
+                        description: |-
+                          (String) Custom properties for the cluster in JSON format.
+                          Custom properties for the cluster in JSON format.
+                        type: string
+                    type: object
+                  clusterType:
+                    description: |-
+                      (String) Cluster type. Type is immutable and can only be set on cluster creation. Can be either byoc or dedicated.
+                      Cluster type. Type is immutable and can only be set on cluster creation. Can be either byoc or dedicated.
+                    type: string
+                  connectionType:
+                    description: |-
+                      practice.
+                      Cluster connection type. Private clusters are not exposed to the internet. For BYOC clusters, private is best-practice.
+                    type: string
+                  customerManagedResources:
+                    description: (Attributes) Customer managed resources configuration
+                      for the cluster. (see below for nested schema)
+                    properties:
+                      aws:
+                        description: (Attributes) (see below for nested schema)
+                        properties:
+                          agentInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the agent instance profile
+                                type: string
+                            type: object
+                          cloudStorageBucket:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the cloud storage bucket
+                                type: string
+                            type: object
+                          clusterSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the cluster security group
+                                type: string
+                            type: object
+                          connectorsNodeGroupInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the connectors node group instance profile
+                                type: string
+                            type: object
+                          connectorsSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the connectors security group
+                                type: string
+                            type: object
+                          k8sClusterRole:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the Kubernetes cluster role
+                                type: string
+                            type: object
+                          nodeSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the node security group
+                                type: string
+                            type: object
+                          permissionsBoundaryPolicy:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the permissions boundary policy
+                                type: string
+                            type: object
+                          redpandaAgentSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the redpanda agent security group
+                                type: string
+                            type: object
+                          redpandaNodeGroupInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the redpanda node group instance profile
+                                type: string
+                            type: object
+                          redpandaNodeGroupSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the redpanda node group security group
+                                type: string
+                            type: object
+                          utilityNodeGroupInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the utility node group instance profile
+                                type: string
+                            type: object
+                          utilitySecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the utility security group
+                                type: string
+                            type: object
+                        type: object
+                      gcp:
+                        description: (Attributes) (see below for nested schema)
+                        properties:
+                          agentServiceAccount:
+                            description: (Attributes) GCP service account for the
+                              agent. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          connectorServiceAccount:
+                            description: (Attributes) GCP service account for managed
+                              connectors. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          consoleServiceAccount:
+                            description: (Attributes) GCP service account for Redpanda
+                              Console. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          gkeServiceAccount:
+                            description: (Attributes) GCP service account for GCP
+                              Kubernetes Engine (GKE). (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          pscNatSubnetName:
+                            description: |-
+                              (String) NAT subnet name if GCP Private Service Connect is enabled.
+                              NAT subnet name if GCP Private Service Connect is enabled.
+                            type: string
+                          redpandaClusterServiceAccount:
+                            description: (Attributes) GCP service account for the
+                              Redpanda cluster. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          subnet:
+                            description: (Attributes) GCP subnet where Redpanda cluster
+                              is deployed. (see below for nested schema)
+                            properties:
+                              k8sMasterIpv4Range:
+                                description: |-
+                                  (String) Kubernetes Master IPv4 range, e.g. 10.0.0.0/24.
+                                  Kubernetes Master IPv4 range, e.g. 10.0.0.0/24.
+                                type: string
+                              name:
+                                description: |-
+                                  (String) Unique name of the cluster.
+                                  Subnet name.
+                                type: string
+                              secondaryIpv4RangePods:
+                                description: (Attributes) Secondary IPv4 range for
+                                  pods. (see below for nested schema)
+                                properties:
+                                  name:
+                                    description: |-
+                                      (String) Unique name of the cluster.
+                                      Secondary IPv4 range name for pods.
+                                    type: string
+                                type: object
+                              secondaryIpv4RangeServices:
+                                description: (Attributes) Secondary IPv4 range for
+                                  services. (see below for nested schema)
+                                properties:
+                                  name:
+                                    description: |-
+                                      (String) Unique name of the cluster.
+                                      Secondary IPv4 range name for services.
+                                    type: string
+                                type: object
+                            type: object
+                          tieredStorageBucket:
+                            description: (Attributes) GCP storage bucket for Tiered
+                              storage. (see below for nested schema)
+                            properties:
+                              name:
+                                description: |-
+                                  (String) Unique name of the cluster.
+                                  GCP storage bucket name.
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  gcpGlobalAccessEnabled:
+                    description: |-
+                      (Boolean) If true, GCP global access is enabled.
+                      If true, GCP global access is enabled.
+                    type: boolean
+                  gcpPrivateServiceConnect:
+                    description: (Attributes) GCP Private Service Connect configuration.
+                      (see below for nested schema)
+                    properties:
+                      consumerAcceptList:
+                        description: (Attributes List) List of consumers that are
+                          allowed to connect to Redpanda GCP PSC (Private Service
+                          Connect) service attachment. (see below for nested schema)
+                        items:
+                          properties:
+                            source:
+                              description: |-
+                                (String) Either the GCP project number or its alphanumeric ID.
+                                Either the GCP project number or its alphanumeric ID.
+                              type: string
+                          type: object
+                        type: array
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether Redpanda GCP Private Service Connect is enabled.
+                        type: boolean
+                      globalAccessEnabled:
+                        description: |-
+                          (Boolean) Whether global access is enabled.
+                          Whether global access is enabled.
+                        type: boolean
+                    type: object
+                  httpProxy:
+                    description: (Attributes) HTTP Proxy properties. (see below for
+                      nested schema)
+                    properties:
+                      mtls:
+                        description: (Attributes) mTLS configuration. (see below for
+                          nested schema)
+                        properties:
+                          caCertificatesPem:
+                            description: |-
+                              (List of String) CA certificate in PEM format.
+                              CA certificate in PEM format.
+                            items:
+                              type: string
+                            type: array
+                          enabled:
+                            description: |-
+                              (Boolean) Whether AWS PrivateLink is enabled.
+                              Whether mTLS is enabled.
+                            type: boolean
+                          principalMappingRules:
+                            description: |-
+                              (List of String) Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                              Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                    type: object
+                  kafkaApi:
+                    description: (Attributes) Cluster's Kafka API properties. (see
+                      below for nested schema)
+                    properties:
+                      mtls:
+                        description: (Attributes) mTLS configuration. (see below for
+                          nested schema)
+                        properties:
+                          caCertificatesPem:
+                            description: |-
+                              (List of String) CA certificate in PEM format.
+                              CA certificate in PEM format.
+                            items:
+                              type: string
+                            type: array
+                          enabled:
+                            description: |-
+                              (Boolean) Whether AWS PrivateLink is enabled.
+                              Whether mTLS is enabled.
+                            type: boolean
+                          principalMappingRules:
+                            description: |-
+                              (List of String) Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                              Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                    type: object
+                  kafkaConnect:
+                    description: (Attributes) Kafka Connect configuration. (see below
+                      for nested schema)
+                    properties:
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether Kafka Connect is enabled.
+                        type: boolean
+                    type: object
+                  maintenanceWindowConfig:
+                    description: (Attributes) Maintenance window configuration for
+                      the cluster. (see below for nested schema)
+                    properties:
+                      anytime:
+                        description: |-
+                          (Boolean) If true, maintenance can occur at any time.
+                          If true, maintenance can occur at any time.
+                        type: boolean
+                      dayHour:
+                        description: (Attributes) (see below for nested schema)
+                        properties:
+                          dayOfWeek:
+                            description: |-
+                              (String) Day of week.
+                              Day of week.
+                            type: string
+                          hourOfDay:
+                            description: |-
+                              (Number) Hour of day.
+                              Hour of day.
+                            type: number
+                        type: object
+                    type: object
+                  name:
+                    description: |-
+                      (String) Unique name of the cluster.
+                      Unique name of the cluster.
+                    type: string
+                  networkId:
+                    description: |-
+                      (String) Network ID where cluster is placed.
+                      Network ID where cluster is placed.
+                    type: string
+                  readReplicaClusterIds:
+                    description: |-
+                      only topics from this cluster.
+                      IDs of clusters that can create read-only topics from this cluster.
+                    items:
+                      type: string
+                    type: array
+                  redpandaVersion:
+                    description: |-
+                      (String) Current Redpanda version of the cluster.
+                      Current Redpanda version of the cluster.
+                    type: string
+                  region:
+                    description: |-
+                      (String) Cloud provider region. Region represents the name of the region where the cluster will be provisioned.
+                      Cloud provider region. Region represents the name of the region where the cluster will be provisioned.
+                    type: string
+                  resourceGroupId:
+                    description: |-
+                      (String) Resource group ID of the cluster.
+                      Resource group ID of the cluster.
+                    type: string
+                  schemaRegistry:
+                    description: (Attributes) Schema Registry properties. (see below
+                      for nested schema)
+                    properties:
+                      mtls:
+                        description: (Attributes) mTLS configuration. (see below for
+                          nested schema)
+                        properties:
+                          caCertificatesPem:
+                            description: |-
+                              (List of String) CA certificate in PEM format.
+                              CA certificate in PEM format.
+                            items:
+                              type: string
+                            type: array
+                          enabled:
+                            description: |-
+                              (Boolean) Whether AWS PrivateLink is enabled.
+                              Whether mTLS is enabled.
+                            type: boolean
+                          principalMappingRules:
+                            description: |-
+                              (List of String) Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                              Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                    type: object
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      tag.", the tag is a network tag that will be added to the Redpanda cluster GKE nodes. Otherwise, the tag is a normal tag. For example, if the name of a tag is "gcp.network-tag.network-tag-foo", the network tag named "network-tag-foo" will be added to the Redpanda cluster GKE nodes. Note: The value of a network tag will be ignored. See the details on network tags at https://cloud.google.com/vpc/docs/add-remove-network-tags.
+                      Tags placed on cloud resources. If the cloud provider is GCP and the name of a tag has the prefix "gcp.network-tag.", the tag is a network tag that will be added to the Redpanda cluster GKE nodes. Otherwise, the tag is a normal tag. For example, if the name of a tag is "gcp.network-tag.network-tag-foo", the network tag named "network-tag-foo" will be added to the Redpanda cluster GKE nodes. Note: The value of a network tag will be ignored. See the details on network tags at https://cloud.google.com/vpc/docs/add-remove-network-tags.
+                    type: object
+                    x-kubernetes-map-type: granular
+                  throughputTier:
+                    description: 'Usage tier of the cluster. WARNING: Do not modify
+                      after it is set.'
+                    type: string
+                  timeouts:
+                    description: (Attributes) (see below for nested schema)
+                    properties:
+                      create:
+                        description: |-
+                          (String) A string that can be parsed as a duration consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                          A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                        type: string
+                      delete:
+                        description: |-
+                          (String) A string that can be parsed as a duration consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+                          A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+                        type: string
+                      update:
+                        description: |-
+                          (String) A string that can be parsed as a duration consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                          A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                        type: string
+                    type: object
+                  zones:
+                    description: |-
+                      AZ cluster.
+                      Zones of the cluster. Must be valid zones within the selected region. If multiple zones are used, the cluster is a multi-AZ cluster.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              initProvider:
+                description: |-
+                  THIS IS A BETA FIELD. It will be honored
+                  unless the Management Policies feature flag is disabled.
+                  InitProvider holds the same fields as ForProvider, with the exception
+                  of Identifier and other resource reference fields. The fields that are
+                  in InitProvider are merged into ForProvider when the resource is created.
+                  The same fields are also added to the terraform ignore_changes hook, to
+                  avoid updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after creation,
+                  for example because of an external controller is managing them, like an
+                  autoscaler.
+                properties:
+                  allowDeletion:
+                    description: |-
+                      (Boolean) Allows deletion of the cluster. Defaults to false.
+                      Allows deletion of the cluster. Defaults to false.
+                    type: boolean
+                  awsPrivateLink:
+                    description: (Attributes) AWS PrivateLink configuration. (see
+                      below for nested schema)
+                    properties:
+                      allowedPrincipals:
+                        description: |-
+                          (List of String) The ARN of the principals that can access the Redpanda AWS PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                          The ARN of the principals that can access the Redpanda AWS PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                        items:
+                          type: string
+                        type: array
+                      connectConsole:
+                        description: |-
+                          (Boolean) Whether Console is connected via PrivateLink.
+                          Whether Console is connected via PrivateLink.
+                        type: boolean
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether AWS PrivateLink is enabled.
+                        type: boolean
+                    type: object
+                  azurePrivateLink:
+                    description: (Attributes) Azure Private Link configuration. (see
+                      below for nested schema)
+                    properties:
+                      allowedSubscriptions:
+                        description: |-
+                          (List of String) The subscriptions that can access the Redpanda Azure PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                          The subscriptions that can access the Redpanda Azure PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                        items:
+                          type: string
+                        type: array
+                      connectConsole:
+                        description: |-
+                          (Boolean) Whether Console is connected via PrivateLink.
+                          Whether Console is connected in Redpanda Azure Private Link Service.
+                        type: boolean
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether Redpanda Azure Private Link Endpoint Service is enabled.
+                        type: boolean
+                    type: object
+                  cloudProvider:
+                    description: |-
+                      (String) Cloud provider where resources are created.
+                      Cloud provider where resources are created.
+                    type: string
+                  clusterConfiguration:
+                    description: (Attributes) Configuration for the cluster. (see
+                      below for nested schema)
+                    properties:
+                      customPropertiesJson:
+                        description: |-
+                          (String) Custom properties for the cluster in JSON format.
+                          Custom properties for the cluster in JSON format.
+                        type: string
+                    type: object
+                  clusterType:
+                    description: |-
+                      (String) Cluster type. Type is immutable and can only be set on cluster creation. Can be either byoc or dedicated.
+                      Cluster type. Type is immutable and can only be set on cluster creation. Can be either byoc or dedicated.
+                    type: string
+                  connectionType:
+                    description: |-
+                      practice.
+                      Cluster connection type. Private clusters are not exposed to the internet. For BYOC clusters, private is best-practice.
+                    type: string
+                  customerManagedResources:
+                    description: (Attributes) Customer managed resources configuration
+                      for the cluster. (see below for nested schema)
+                    properties:
+                      aws:
+                        description: (Attributes) (see below for nested schema)
+                        properties:
+                          agentInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the agent instance profile
+                                type: string
+                            type: object
+                          cloudStorageBucket:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the cloud storage bucket
+                                type: string
+                            type: object
+                          clusterSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the cluster security group
+                                type: string
+                            type: object
+                          connectorsNodeGroupInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the connectors node group instance profile
+                                type: string
+                            type: object
+                          connectorsSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the connectors security group
+                                type: string
+                            type: object
+                          k8sClusterRole:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the Kubernetes cluster role
+                                type: string
+                            type: object
+                          nodeSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the node security group
+                                type: string
+                            type: object
+                          permissionsBoundaryPolicy:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the permissions boundary policy
+                                type: string
+                            type: object
+                          redpandaAgentSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the redpanda agent security group
+                                type: string
+                            type: object
+                          redpandaNodeGroupInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the redpanda node group instance profile
+                                type: string
+                            type: object
+                          redpandaNodeGroupSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the redpanda node group security group
+                                type: string
+                            type: object
+                          utilityNodeGroupInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the utility node group instance profile
+                                type: string
+                            type: object
+                          utilitySecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the utility security group
+                                type: string
+                            type: object
+                        type: object
+                      gcp:
+                        description: (Attributes) (see below for nested schema)
+                        properties:
+                          agentServiceAccount:
+                            description: (Attributes) GCP service account for the
+                              agent. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          connectorServiceAccount:
+                            description: (Attributes) GCP service account for managed
+                              connectors. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          consoleServiceAccount:
+                            description: (Attributes) GCP service account for Redpanda
+                              Console. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          gkeServiceAccount:
+                            description: (Attributes) GCP service account for GCP
+                              Kubernetes Engine (GKE). (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          pscNatSubnetName:
+                            description: |-
+                              (String) NAT subnet name if GCP Private Service Connect is enabled.
+                              NAT subnet name if GCP Private Service Connect is enabled.
+                            type: string
+                          redpandaClusterServiceAccount:
+                            description: (Attributes) GCP service account for the
+                              Redpanda cluster. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          subnet:
+                            description: (Attributes) GCP subnet where Redpanda cluster
+                              is deployed. (see below for nested schema)
+                            properties:
+                              k8sMasterIpv4Range:
+                                description: |-
+                                  (String) Kubernetes Master IPv4 range, e.g. 10.0.0.0/24.
+                                  Kubernetes Master IPv4 range, e.g. 10.0.0.0/24.
+                                type: string
+                              name:
+                                description: |-
+                                  (String) Unique name of the cluster.
+                                  Subnet name.
+                                type: string
+                              secondaryIpv4RangePods:
+                                description: (Attributes) Secondary IPv4 range for
+                                  pods. (see below for nested schema)
+                                properties:
+                                  name:
+                                    description: |-
+                                      (String) Unique name of the cluster.
+                                      Secondary IPv4 range name for pods.
+                                    type: string
+                                type: object
+                              secondaryIpv4RangeServices:
+                                description: (Attributes) Secondary IPv4 range for
+                                  services. (see below for nested schema)
+                                properties:
+                                  name:
+                                    description: |-
+                                      (String) Unique name of the cluster.
+                                      Secondary IPv4 range name for services.
+                                    type: string
+                                type: object
+                            type: object
+                          tieredStorageBucket:
+                            description: (Attributes) GCP storage bucket for Tiered
+                              storage. (see below for nested schema)
+                            properties:
+                              name:
+                                description: |-
+                                  (String) Unique name of the cluster.
+                                  GCP storage bucket name.
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  gcpGlobalAccessEnabled:
+                    description: |-
+                      (Boolean) If true, GCP global access is enabled.
+                      If true, GCP global access is enabled.
+                    type: boolean
+                  gcpPrivateServiceConnect:
+                    description: (Attributes) GCP Private Service Connect configuration.
+                      (see below for nested schema)
+                    properties:
+                      consumerAcceptList:
+                        description: (Attributes List) List of consumers that are
+                          allowed to connect to Redpanda GCP PSC (Private Service
+                          Connect) service attachment. (see below for nested schema)
+                        items:
+                          properties:
+                            source:
+                              description: |-
+                                (String) Either the GCP project number or its alphanumeric ID.
+                                Either the GCP project number or its alphanumeric ID.
+                              type: string
+                          type: object
+                        type: array
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether Redpanda GCP Private Service Connect is enabled.
+                        type: boolean
+                      globalAccessEnabled:
+                        description: |-
+                          (Boolean) Whether global access is enabled.
+                          Whether global access is enabled.
+                        type: boolean
+                    type: object
+                  httpProxy:
+                    description: (Attributes) HTTP Proxy properties. (see below for
+                      nested schema)
+                    properties:
+                      mtls:
+                        description: (Attributes) mTLS configuration. (see below for
+                          nested schema)
+                        properties:
+                          caCertificatesPem:
+                            description: |-
+                              (List of String) CA certificate in PEM format.
+                              CA certificate in PEM format.
+                            items:
+                              type: string
+                            type: array
+                          enabled:
+                            description: |-
+                              (Boolean) Whether AWS PrivateLink is enabled.
+                              Whether mTLS is enabled.
+                            type: boolean
+                          principalMappingRules:
+                            description: |-
+                              (List of String) Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                              Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                    type: object
+                  kafkaApi:
+                    description: (Attributes) Cluster's Kafka API properties. (see
+                      below for nested schema)
+                    properties:
+                      mtls:
+                        description: (Attributes) mTLS configuration. (see below for
+                          nested schema)
+                        properties:
+                          caCertificatesPem:
+                            description: |-
+                              (List of String) CA certificate in PEM format.
+                              CA certificate in PEM format.
+                            items:
+                              type: string
+                            type: array
+                          enabled:
+                            description: |-
+                              (Boolean) Whether AWS PrivateLink is enabled.
+                              Whether mTLS is enabled.
+                            type: boolean
+                          principalMappingRules:
+                            description: |-
+                              (List of String) Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                              Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                    type: object
+                  kafkaConnect:
+                    description: (Attributes) Kafka Connect configuration. (see below
+                      for nested schema)
+                    properties:
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether Kafka Connect is enabled.
+                        type: boolean
+                    type: object
+                  maintenanceWindowConfig:
+                    description: (Attributes) Maintenance window configuration for
+                      the cluster. (see below for nested schema)
+                    properties:
+                      anytime:
+                        description: |-
+                          (Boolean) If true, maintenance can occur at any time.
+                          If true, maintenance can occur at any time.
+                        type: boolean
+                      dayHour:
+                        description: (Attributes) (see below for nested schema)
+                        properties:
+                          dayOfWeek:
+                            description: |-
+                              (String) Day of week.
+                              Day of week.
+                            type: string
+                          hourOfDay:
+                            description: |-
+                              (Number) Hour of day.
+                              Hour of day.
+                            type: number
+                        type: object
+                    type: object
+                  name:
+                    description: |-
+                      (String) Unique name of the cluster.
+                      Unique name of the cluster.
+                    type: string
+                  networkId:
+                    description: |-
+                      (String) Network ID where cluster is placed.
+                      Network ID where cluster is placed.
+                    type: string
+                  readReplicaClusterIds:
+                    description: |-
+                      only topics from this cluster.
+                      IDs of clusters that can create read-only topics from this cluster.
+                    items:
+                      type: string
+                    type: array
+                  redpandaVersion:
+                    description: |-
+                      (String) Current Redpanda version of the cluster.
+                      Current Redpanda version of the cluster.
+                    type: string
+                  region:
+                    description: |-
+                      (String) Cloud provider region. Region represents the name of the region where the cluster will be provisioned.
+                      Cloud provider region. Region represents the name of the region where the cluster will be provisioned.
+                    type: string
+                  resourceGroupId:
+                    description: |-
+                      (String) Resource group ID of the cluster.
+                      Resource group ID of the cluster.
+                    type: string
+                  schemaRegistry:
+                    description: (Attributes) Schema Registry properties. (see below
+                      for nested schema)
+                    properties:
+                      mtls:
+                        description: (Attributes) mTLS configuration. (see below for
+                          nested schema)
+                        properties:
+                          caCertificatesPem:
+                            description: |-
+                              (List of String) CA certificate in PEM format.
+                              CA certificate in PEM format.
+                            items:
+                              type: string
+                            type: array
+                          enabled:
+                            description: |-
+                              (Boolean) Whether AWS PrivateLink is enabled.
+                              Whether mTLS is enabled.
+                            type: boolean
+                          principalMappingRules:
+                            description: |-
+                              (List of String) Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                              Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                    type: object
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      tag.", the tag is a network tag that will be added to the Redpanda cluster GKE nodes. Otherwise, the tag is a normal tag. For example, if the name of a tag is "gcp.network-tag.network-tag-foo", the network tag named "network-tag-foo" will be added to the Redpanda cluster GKE nodes. Note: The value of a network tag will be ignored. See the details on network tags at https://cloud.google.com/vpc/docs/add-remove-network-tags.
+                      Tags placed on cloud resources. If the cloud provider is GCP and the name of a tag has the prefix "gcp.network-tag.", the tag is a network tag that will be added to the Redpanda cluster GKE nodes. Otherwise, the tag is a normal tag. For example, if the name of a tag is "gcp.network-tag.network-tag-foo", the network tag named "network-tag-foo" will be added to the Redpanda cluster GKE nodes. Note: The value of a network tag will be ignored. See the details on network tags at https://cloud.google.com/vpc/docs/add-remove-network-tags.
+                    type: object
+                    x-kubernetes-map-type: granular
+                  throughputTier:
+                    description: 'Usage tier of the cluster. WARNING: Do not modify
+                      after it is set.'
+                    type: string
+                  timeouts:
+                    description: (Attributes) (see below for nested schema)
+                    properties:
+                      create:
+                        description: |-
+                          (String) A string that can be parsed as a duration consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                          A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                        type: string
+                      delete:
+                        description: |-
+                          (String) A string that can be parsed as a duration consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+                          A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+                        type: string
+                      update:
+                        description: |-
+                          (String) A string that can be parsed as a duration consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                          A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                        type: string
+                    type: object
+                  zones:
+                    description: |-
+                      AZ cluster.
+                      Zones of the cluster. Must be valid zones within the selected region. If multiple zones are used, the cluster is a multi-AZ cluster.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: |-
+                  THIS IS A BETA FIELD. It is on by default but can be opted out
+                  through a Crossplane feature flag.
+                  ManagementPolicies specify the array of actions Crossplane is allowed to
+                  take on the managed and external resources.
+                  This field is planned to replace the DeletionPolicy field in a future
+                  release. Currently, both could be set independently and non-default
+                  values would be honored if the feature flag is enabled. If both are
+                  custom, the DeletionPolicy field will be ignored.
+                  See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+                items:
+                  description: |-
+                    A ManagementAction represents an action that the Crossplane controllers
+                    can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: |-
+                  ProviderConfigReference specifies how the provider that will be used to
+                  create, observe, update, and delete this managed resource should be
+                  configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: |-
+                          Resolution specifies whether resolution of this reference is required.
+                          The default is 'Required', which means the reconcile will fail if the
+                          reference cannot be resolved. 'Optional' means this reference will be
+                          a no-op if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: |-
+                          Resolve specifies when this reference should be resolved. The default
+                          is 'IfNotPresent', which will attempt to resolve the reference only when
+                          the corresponding field is not present. Use 'Always' to resolve the
+                          reference on every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: |-
+                  WriteConnectionSecretToReference specifies the namespace and name of a
+                  Secret to which any connection details for this managed resource should
+                  be written. Connection details frequently include the endpoint, username,
+                  and password required to connect to the managed resource.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: spec.forProvider.cloudProvider is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.cloudProvider)
+                || (has(self.initProvider) && has(self.initProvider.cloudProvider))'
+            - message: spec.forProvider.clusterType is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.clusterType)
+                || (has(self.initProvider) && has(self.initProvider.clusterType))'
+            - message: spec.forProvider.connectionType is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.connectionType)
+                || (has(self.initProvider) && has(self.initProvider.connectionType))'
+            - message: spec.forProvider.name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || (has(self.initProvider) && has(self.initProvider.name))'
+            - message: spec.forProvider.networkId is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.networkId)
+                || (has(self.initProvider) && has(self.initProvider.networkId))'
+            - message: spec.forProvider.region is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.region)
+                || (has(self.initProvider) && has(self.initProvider.region))'
+            - message: spec.forProvider.resourceGroupId is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.resourceGroupId)
+                || (has(self.initProvider) && has(self.initProvider.resourceGroupId))'
+            - message: spec.forProvider.throughputTier is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.throughputTier)
+                || (has(self.initProvider) && has(self.initProvider.throughputTier))'
+            - message: spec.forProvider.zones is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.zones)
+                || (has(self.initProvider) && has(self.initProvider.zones))'
+          status:
+            description: ClusterStatus defines the observed state of Cluster.
+            properties:
+              atProvider:
+                properties:
+                  allowDeletion:
+                    description: |-
+                      (Boolean) Allows deletion of the cluster. Defaults to false.
+                      Allows deletion of the cluster. Defaults to false.
+                    type: boolean
+                  awsPrivateLink:
+                    description: (Attributes) AWS PrivateLink configuration. (see
+                      below for nested schema)
+                    properties:
+                      allowedPrincipals:
+                        description: |-
+                          (List of String) The ARN of the principals that can access the Redpanda AWS PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                          The ARN of the principals that can access the Redpanda AWS PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                        items:
+                          type: string
+                        type: array
+                      connectConsole:
+                        description: |-
+                          (Boolean) Whether Console is connected via PrivateLink.
+                          Whether Console is connected via PrivateLink.
+                        type: boolean
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether AWS PrivateLink is enabled.
+                        type: boolean
+                      status:
+                        description: (Attributes) Current status of the PrivateLink
+                          configuration. (see below for nested schema)
+                        properties:
+                          consolePort:
+                            description: |-
+                              (Number) Port for Redpanda Console.
+                              Port for Redpanda Console.
+                            type: number
+                          createdAt:
+                            description: |-
+                              (String) Timestamp when the cluster was created.
+                              When the PrivateLink service was created.
+                            type: string
+                          deletedAt:
+                            description: |-
+                              (String) When the PrivateLink service was deleted.
+                              When the PrivateLink service was deleted.
+                            type: string
+                          kafkaApiNodeBasePort:
+                            description: |-
+                              (Number) Base port for Kafka API nodes.
+                              Base port for Kafka API nodes.
+                            type: number
+                          kafkaApiSeedPort:
+                            description: |-
+                              (Number) Port for Kafka API seed brokers.
+                              Port for Kafka API seed brokers.
+                            type: number
+                          redpandaProxyNodeBasePort:
+                            description: |-
+                              (Number) Base port for HTTP proxy nodes.
+                              Base port for HTTP proxy nodes.
+                            type: number
+                          redpandaProxySeedPort:
+                            description: |-
+                              (Number) Port for HTTP proxy.
+                              Port for HTTP proxy.
+                            type: number
+                          schemaRegistrySeedPort:
+                            description: |-
+                              (Number) Port for Schema Registry.
+                              Port for Schema Registry.
+                            type: number
+                          serviceId:
+                            description: |-
+                              (String) The PrivateLink service ID.
+                              The PrivateLink service ID.
+                            type: string
+                          serviceName:
+                            description: |-
+                              (String) The PrivateLink service name.
+                              The PrivateLink service name.
+                            type: string
+                          serviceState:
+                            description: |-
+                              (String) Current state of the PrivateLink service.
+                              Current state of the PrivateLink service.
+                            type: string
+                          vpcEndpointConnections:
+                            description: (Attributes List) List of VPC endpoint connections.
+                              (see below for nested schema)
+                            items:
+                              properties:
+                                connectionId:
+                                  description: |-
+                                    (String) The connection ID.
+                                    The connection ID.
+                                  type: string
+                                createdAt:
+                                  description: |-
+                                    (String) Timestamp when the cluster was created.
+                                    When the endpoint connection was created.
+                                  type: string
+                                dnsEntries:
+                                  description: (Attributes List) DNS entries for the
+                                    endpoint. (see below for nested schema)
+                                  items:
+                                    properties:
+                                      dnsName:
+                                        description: |-
+                                          (String) The DNS name.
+                                          The DNS name.
+                                        type: string
+                                      hostedZoneId:
+                                        description: |-
+                                          (String) The hosted zone ID.
+                                          The hosted zone ID.
+                                        type: string
+                                    type: object
+                                  type: array
+                                id:
+                                  description: |-
+                                    (String) ID of the cluster. ID is an output from the Create Cluster endpoint and cannot be set by the caller.
+                                    The endpoint connection ID.
+                                  type: string
+                                loadBalancerArns:
+                                  description: |-
+                                    (List of String) ARNs of associated load balancers.
+                                    ARNs of associated load balancers.
+                                  items:
+                                    type: string
+                                  type: array
+                                owner:
+                                  description: |-
+                                    (String) Owner of the endpoint connection.
+                                    Owner of the endpoint connection.
+                                  type: string
+                                state:
+                                  description: |-
+                                    (String) Current state of the cluster.
+                                    State of the endpoint connection.
+                                  type: string
+                              type: object
+                            type: array
+                        type: object
+                    type: object
+                  azurePrivateLink:
+                    description: (Attributes) Azure Private Link configuration. (see
+                      below for nested schema)
+                    properties:
+                      allowedSubscriptions:
+                        description: |-
+                          (List of String) The subscriptions that can access the Redpanda Azure PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                          The subscriptions that can access the Redpanda Azure PrivateLink Endpoint Service. To grant permissions to all principals, use an asterisk (*).
+                        items:
+                          type: string
+                        type: array
+                      connectConsole:
+                        description: |-
+                          (Boolean) Whether Console is connected via PrivateLink.
+                          Whether Console is connected in Redpanda Azure Private Link Service.
+                        type: boolean
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether Redpanda Azure Private Link Endpoint Service is enabled.
+                        type: boolean
+                      status:
+                        description: (Attributes) Current status of the PrivateLink
+                          configuration. (see below for nested schema)
+                        properties:
+                          approvedSubscriptions:
+                            description: |-
+                              (List of String) List of approved Azure subscription IDs.
+                              List of approved Azure subscription IDs.
+                            items:
+                              type: string
+                            type: array
+                          consolePort:
+                            description: |-
+                              (Number) Port for Redpanda Console.
+                              Port for Redpanda Console.
+                            type: number
+                          createdAt:
+                            description: |-
+                              (String) Timestamp when the cluster was created.
+                              When the Private Link service was created.
+                            type: string
+                          deletedAt:
+                            description: |-
+                              (String) When the PrivateLink service was deleted.
+                              When the Private Link service was deleted.
+                            type: string
+                          dnsARecord:
+                            description: |-
+                              (String) DNS A record for the service.
+                              DNS A record for the service.
+                            type: string
+                          kafkaApiNodeBasePort:
+                            description: |-
+                              (Number) Base port for Kafka API nodes.
+                              Base port for Kafka API nodes.
+                            type: number
+                          kafkaApiSeedPort:
+                            description: |-
+                              (Number) Port for Kafka API seed brokers.
+                              Port for Kafka API seed brokers.
+                            type: number
+                          privateEndpointConnections:
+                            description: (Attributes List) List of private endpoint
+                              connections. (see below for nested schema)
+                            items:
+                              properties:
+                                connectionId:
+                                  description: |-
+                                    (String) The connection ID.
+                                    ID of the connection.
+                                  type: string
+                                connectionName:
+                                  description: |-
+                                    (String) Name of the connection.
+                                    Name of the connection.
+                                  type: string
+                                createdAt:
+                                  description: |-
+                                    (String) Timestamp when the cluster was created.
+                                    When the endpoint connection was created.
+                                  type: string
+                                privateEndpointId:
+                                  description: |-
+                                    (String) ID of the private endpoint.
+                                    ID of the private endpoint.
+                                  type: string
+                                privateEndpointName:
+                                  description: |-
+                                    (String) Name of the private endpoint.
+                                    Name of the private endpoint.
+                                  type: string
+                                status:
+                                  description: |-
+                                    (Attributes) Current status of the PrivateLink configuration. (see below for nested schema)
+                                    Status of the endpoint connection.
+                                  type: string
+                              type: object
+                            type: array
+                          redpandaProxyNodeBasePort:
+                            description: |-
+                              (Number) Base port for HTTP proxy nodes.
+                              Base port for HTTP proxy nodes.
+                            type: number
+                          redpandaProxySeedPort:
+                            description: |-
+                              (Number) Port for HTTP proxy.
+                              Port for HTTP proxy.
+                            type: number
+                          schemaRegistrySeedPort:
+                            description: |-
+                              (Number) Port for Schema Registry.
+                              Port for Schema Registry.
+                            type: number
+                          serviceId:
+                            description: |-
+                              (String) The PrivateLink service ID.
+                              The Private Link service ID.
+                            type: string
+                          serviceName:
+                            description: |-
+                              (String) The PrivateLink service name.
+                              The Private Link service name.
+                            type: string
+                        type: object
+                    type: object
+                  cloudProvider:
+                    description: |-
+                      (String) Cloud provider where resources are created.
+                      Cloud provider where resources are created.
+                    type: string
+                  clusterApiUrl:
+                    description: |-
+                      (String) The URL of the cluster API.
+                      The URL of the cluster API.
+                    type: string
+                  clusterConfiguration:
+                    description: (Attributes) Configuration for the cluster. (see
+                      below for nested schema)
+                    properties:
+                      customPropertiesJson:
+                        description: |-
+                          (String) Custom properties for the cluster in JSON format.
+                          Custom properties for the cluster in JSON format.
+                        type: string
+                    type: object
+                  clusterType:
+                    description: |-
+                      (String) Cluster type. Type is immutable and can only be set on cluster creation. Can be either byoc or dedicated.
+                      Cluster type. Type is immutable and can only be set on cluster creation. Can be either byoc or dedicated.
+                    type: string
+                  connectionType:
+                    description: |-
+                      practice.
+                      Cluster connection type. Private clusters are not exposed to the internet. For BYOC clusters, private is best-practice.
+                    type: string
+                  createdAt:
+                    description: |-
+                      (String) Timestamp when the cluster was created.
+                      Timestamp when the cluster was created.
+                    type: string
+                  customerManagedResources:
+                    description: (Attributes) Customer managed resources configuration
+                      for the cluster. (see below for nested schema)
+                    properties:
+                      aws:
+                        description: (Attributes) (see below for nested schema)
+                        properties:
+                          agentInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the agent instance profile
+                                type: string
+                            type: object
+                          cloudStorageBucket:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the cloud storage bucket
+                                type: string
+                            type: object
+                          clusterSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the cluster security group
+                                type: string
+                            type: object
+                          connectorsNodeGroupInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the connectors node group instance profile
+                                type: string
+                            type: object
+                          connectorsSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the connectors security group
+                                type: string
+                            type: object
+                          k8sClusterRole:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the Kubernetes cluster role
+                                type: string
+                            type: object
+                          nodeSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the node security group
+                                type: string
+                            type: object
+                          permissionsBoundaryPolicy:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the permissions boundary policy
+                                type: string
+                            type: object
+                          redpandaAgentSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the redpanda agent security group
+                                type: string
+                            type: object
+                          redpandaNodeGroupInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the redpanda node group instance profile
+                                type: string
+                            type: object
+                          redpandaNodeGroupSecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the redpanda node group security group
+                                type: string
+                            type: object
+                          utilityNodeGroupInstanceProfile:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the utility node group instance profile
+                                type: string
+                            type: object
+                          utilitySecurityGroup:
+                            description: (Attributes) (see below for nested schema)
+                            properties:
+                              arn:
+                                description: |-
+                                  (String) ARN for the agent instance profile
+                                  ARN for the utility security group
+                                type: string
+                            type: object
+                        type: object
+                      gcp:
+                        description: (Attributes) (see below for nested schema)
+                        properties:
+                          agentServiceAccount:
+                            description: (Attributes) GCP service account for the
+                              agent. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          connectorServiceAccount:
+                            description: (Attributes) GCP service account for managed
+                              connectors. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          consoleServiceAccount:
+                            description: (Attributes) GCP service account for Redpanda
+                              Console. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          gkeServiceAccount:
+                            description: (Attributes) GCP service account for GCP
+                              Kubernetes Engine (GKE). (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          pscNatSubnetName:
+                            description: |-
+                              (String) NAT subnet name if GCP Private Service Connect is enabled.
+                              NAT subnet name if GCP Private Service Connect is enabled.
+                            type: string
+                          redpandaClusterServiceAccount:
+                            description: (Attributes) GCP service account for the
+                              Redpanda cluster. (see below for nested schema)
+                            properties:
+                              email:
+                                description: |-
+                                  (String) GCP service account email.
+                                  GCP service account email.
+                                type: string
+                            type: object
+                          subnet:
+                            description: (Attributes) GCP subnet where Redpanda cluster
+                              is deployed. (see below for nested schema)
+                            properties:
+                              k8sMasterIpv4Range:
+                                description: |-
+                                  (String) Kubernetes Master IPv4 range, e.g. 10.0.0.0/24.
+                                  Kubernetes Master IPv4 range, e.g. 10.0.0.0/24.
+                                type: string
+                              name:
+                                description: |-
+                                  (String) Unique name of the cluster.
+                                  Subnet name.
+                                type: string
+                              secondaryIpv4RangePods:
+                                description: (Attributes) Secondary IPv4 range for
+                                  pods. (see below for nested schema)
+                                properties:
+                                  name:
+                                    description: |-
+                                      (String) Unique name of the cluster.
+                                      Secondary IPv4 range name for pods.
+                                    type: string
+                                type: object
+                              secondaryIpv4RangeServices:
+                                description: (Attributes) Secondary IPv4 range for
+                                  services. (see below for nested schema)
+                                properties:
+                                  name:
+                                    description: |-
+                                      (String) Unique name of the cluster.
+                                      Secondary IPv4 range name for services.
+                                    type: string
+                                type: object
+                            type: object
+                          tieredStorageBucket:
+                            description: (Attributes) GCP storage bucket for Tiered
+                              storage. (see below for nested schema)
+                            properties:
+                              name:
+                                description: |-
+                                  (String) Unique name of the cluster.
+                                  GCP storage bucket name.
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  gcpGlobalAccessEnabled:
+                    description: |-
+                      (Boolean) If true, GCP global access is enabled.
+                      If true, GCP global access is enabled.
+                    type: boolean
+                  gcpPrivateServiceConnect:
+                    description: (Attributes) GCP Private Service Connect configuration.
+                      (see below for nested schema)
+                    properties:
+                      consumerAcceptList:
+                        description: (Attributes List) List of consumers that are
+                          allowed to connect to Redpanda GCP PSC (Private Service
+                          Connect) service attachment. (see below for nested schema)
+                        items:
+                          properties:
+                            source:
+                              description: |-
+                                (String) Either the GCP project number or its alphanumeric ID.
+                                Either the GCP project number or its alphanumeric ID.
+                              type: string
+                          type: object
+                        type: array
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether Redpanda GCP Private Service Connect is enabled.
+                        type: boolean
+                      globalAccessEnabled:
+                        description: |-
+                          (Boolean) Whether global access is enabled.
+                          Whether global access is enabled.
+                        type: boolean
+                      status:
+                        description: (Attributes) Current status of the PrivateLink
+                          configuration. (see below for nested schema)
+                        properties:
+                          connectedEndpoints:
+                            description: (Attributes List) List of connected endpoints.
+                              (see below for nested schema)
+                            items:
+                              properties:
+                                connectionId:
+                                  description: |-
+                                    (String) The connection ID.
+                                    The connection ID.
+                                  type: string
+                                consumerNetwork:
+                                  description: |-
+                                    (String) The consumer network.
+                                    The consumer network.
+                                  type: string
+                                endpoint:
+                                  description: |-
+                                    (String) The endpoint address.
+                                    The endpoint address.
+                                  type: string
+                                status:
+                                  description: |-
+                                    (Attributes) Current status of the PrivateLink configuration. (see below for nested schema)
+                                    Status of the endpoint connection.
+                                  type: string
+                              type: object
+                            type: array
+                          createdAt:
+                            description: |-
+                              (String) Timestamp when the cluster was created.
+                              When the Private Service Connect service was created.
+                            type: string
+                          deletedAt:
+                            description: |-
+                              (String) When the PrivateLink service was deleted.
+                              When the Private Service Connect service was deleted.
+                            type: string
+                          dnsARecords:
+                            description: |-
+                              (List of String) DNS A records for the service.
+                              DNS A records for the service.
+                            items:
+                              type: string
+                            type: array
+                          kafkaApiNodeBasePort:
+                            description: |-
+                              (Number) Base port for Kafka API nodes.
+                              Base port for Kafka API nodes.
+                            type: number
+                          kafkaApiSeedPort:
+                            description: |-
+                              (Number) Port for Kafka API seed brokers.
+                              Port for Kafka API seed brokers.
+                            type: number
+                          redpandaProxyNodeBasePort:
+                            description: |-
+                              (Number) Base port for HTTP proxy nodes.
+                              Base port for HTTP proxy nodes.
+                            type: number
+                          redpandaProxySeedPort:
+                            description: |-
+                              (Number) Port for HTTP proxy.
+                              Port for HTTP proxy.
+                            type: number
+                          schemaRegistrySeedPort:
+                            description: |-
+                              (Number) Port for Schema Registry.
+                              Port for Schema Registry.
+                            type: number
+                          seedHostname:
+                            description: |-
+                              (String) Hostname for the seed brokers.
+                              Hostname for the seed brokers.
+                            type: string
+                          serviceAttachment:
+                            description: |-
+                              (String) The service attachment identifier.
+                              The service attachment identifier.
+                            type: string
+                        type: object
+                    type: object
+                  httpProxy:
+                    description: (Attributes) HTTP Proxy properties. (see below for
+                      nested schema)
+                    properties:
+                      mtls:
+                        description: (Attributes) mTLS configuration. (see below for
+                          nested schema)
+                        properties:
+                          caCertificatesPem:
+                            description: |-
+                              (List of String) CA certificate in PEM format.
+                              CA certificate in PEM format.
+                            items:
+                              type: string
+                            type: array
+                          enabled:
+                            description: |-
+                              (Boolean) Whether AWS PrivateLink is enabled.
+                              Whether mTLS is enabled.
+                            type: boolean
+                          principalMappingRules:
+                            description: |-
+                              (List of String) Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                              Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      url:
+                        description: |-
+                          (String) The HTTP Proxy URL.
+                          The HTTP Proxy URL.
+                        type: string
+                    type: object
+                  id:
+                    description: (String) ID of the cluster. ID is an output from
+                      the Create Cluster endpoint and cannot be set by the caller.
+                    type: string
+                  kafkaApi:
+                    description: (Attributes) Cluster's Kafka API properties. (see
+                      below for nested schema)
+                    properties:
+                      mtls:
+                        description: (Attributes) mTLS configuration. (see below for
+                          nested schema)
+                        properties:
+                          caCertificatesPem:
+                            description: |-
+                              (List of String) CA certificate in PEM format.
+                              CA certificate in PEM format.
+                            items:
+                              type: string
+                            type: array
+                          enabled:
+                            description: |-
+                              (Boolean) Whether AWS PrivateLink is enabled.
+                              Whether mTLS is enabled.
+                            type: boolean
+                          principalMappingRules:
+                            description: |-
+                              (List of String) Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                              Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      seedBrokers:
+                        description: |-
+                          (List of String) List of Kafka broker addresses.
+                          List of Kafka broker addresses.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  kafkaConnect:
+                    description: (Attributes) Kafka Connect configuration. (see below
+                      for nested schema)
+                    properties:
+                      enabled:
+                        description: |-
+                          (Boolean) Whether AWS PrivateLink is enabled.
+                          Whether Kafka Connect is enabled.
+                        type: boolean
+                    type: object
+                  maintenanceWindowConfig:
+                    description: (Attributes) Maintenance window configuration for
+                      the cluster. (see below for nested schema)
+                    properties:
+                      anytime:
+                        description: |-
+                          (Boolean) If true, maintenance can occur at any time.
+                          If true, maintenance can occur at any time.
+                        type: boolean
+                      dayHour:
+                        description: (Attributes) (see below for nested schema)
+                        properties:
+                          dayOfWeek:
+                            description: |-
+                              (String) Day of week.
+                              Day of week.
+                            type: string
+                          hourOfDay:
+                            description: |-
+                              (Number) Hour of day.
+                              Hour of day.
+                            type: number
+                        type: object
+                      unspecified:
+                        description: |-
+                          (Boolean) If true, maintenance window is unspecified.
+                          If true, maintenance window is unspecified.
+                        type: boolean
+                    type: object
+                  name:
+                    description: |-
+                      (String) Unique name of the cluster.
+                      Unique name of the cluster.
+                    type: string
+                  networkId:
+                    description: |-
+                      (String) Network ID where cluster is placed.
+                      Network ID where cluster is placed.
+                    type: string
+                  prometheus:
+                    description: (Attributes) Prometheus metrics endpoint properties.
+                      (see below for nested schema)
+                    properties:
+                      url:
+                        description: |-
+                          (String) The HTTP Proxy URL.
+                          The Prometheus metrics endpoint URL.
+                        type: string
+                    type: object
+                  readReplicaClusterIds:
+                    description: |-
+                      only topics from this cluster.
+                      IDs of clusters that can create read-only topics from this cluster.
+                    items:
+                      type: string
+                    type: array
+                  redpandaConsole:
+                    description: (Attributes) Redpanda Console properties. (see below
+                      for nested schema)
+                    properties:
+                      url:
+                        description: |-
+                          (String) The HTTP Proxy URL.
+                          The Redpanda Console URL.
+                        type: string
+                    type: object
+                  redpandaVersion:
+                    description: |-
+                      (String) Current Redpanda version of the cluster.
+                      Current Redpanda version of the cluster.
+                    type: string
+                  region:
+                    description: |-
+                      (String) Cloud provider region. Region represents the name of the region where the cluster will be provisioned.
+                      Cloud provider region. Region represents the name of the region where the cluster will be provisioned.
+                    type: string
+                  resourceGroupId:
+                    description: |-
+                      (String) Resource group ID of the cluster.
+                      Resource group ID of the cluster.
+                    type: string
+                  schemaRegistry:
+                    description: (Attributes) Schema Registry properties. (see below
+                      for nested schema)
+                    properties:
+                      mtls:
+                        description: (Attributes) mTLS configuration. (see below for
+                          nested schema)
+                        properties:
+                          caCertificatesPem:
+                            description: |-
+                              (List of String) CA certificate in PEM format.
+                              CA certificate in PEM format.
+                            items:
+                              type: string
+                            type: array
+                          enabled:
+                            description: |-
+                              (Boolean) Whether AWS PrivateLink is enabled.
+                              Whether mTLS is enabled.
+                            type: boolean
+                          principalMappingRules:
+                            description: |-
+                              (List of String) Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                              Principal mapping rules for mTLS authentication. See the Redpanda documentation on configuring authentication.
+                            items:
+                              type: string
+                            type: array
+                        type: object
+                      url:
+                        description: |-
+                          (String) The HTTP Proxy URL.
+                          The Schema Registry URL.
+                        type: string
+                    type: object
+                  state:
+                    description: |-
+                      (String) Current state of the cluster.
+                      Current state of the cluster.
+                    type: string
+                  stateDescription:
+                    description: ready state. (see below for nested schema)
+                    properties:
+                      code:
+                        description: |-
+                          (Number) Error code if cluster is in error state.
+                          Error code if cluster is in error state.
+                        type: number
+                      message:
+                        description: |-
+                          (String) Detailed error message if cluster is in error state.
+                          Detailed error message if cluster is in error state.
+                        type: string
+                    type: object
+                  tags:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      tag.", the tag is a network tag that will be added to the Redpanda cluster GKE nodes. Otherwise, the tag is a normal tag. For example, if the name of a tag is "gcp.network-tag.network-tag-foo", the network tag named "network-tag-foo" will be added to the Redpanda cluster GKE nodes. Note: The value of a network tag will be ignored. See the details on network tags at https://cloud.google.com/vpc/docs/add-remove-network-tags.
+                      Tags placed on cloud resources. If the cloud provider is GCP and the name of a tag has the prefix "gcp.network-tag.", the tag is a network tag that will be added to the Redpanda cluster GKE nodes. Otherwise, the tag is a normal tag. For example, if the name of a tag is "gcp.network-tag.network-tag-foo", the network tag named "network-tag-foo" will be added to the Redpanda cluster GKE nodes. Note: The value of a network tag will be ignored. See the details on network tags at https://cloud.google.com/vpc/docs/add-remove-network-tags.
+                    type: object
+                    x-kubernetes-map-type: granular
+                  throughputTier:
+                    description: 'Usage tier of the cluster. WARNING: Do not modify
+                      after it is set.'
+                    type: string
+                  timeouts:
+                    description: (Attributes) (see below for nested schema)
+                    properties:
+                      create:
+                        description: |-
+                          (String) A string that can be parsed as a duration consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                          A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                        type: string
+                      delete:
+                        description: |-
+                          (String) A string that can be parsed as a duration consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+                          A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+                        type: string
+                      update:
+                        description: |-
+                          (String) A string that can be parsed as a duration consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                          A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+                        type: string
+                    type: object
+                  zones:
+                    description: |-
+                      AZ cluster.
+                      Zones of the cluster. Must be valid zones within the selected region. If multiple zones are used, the cluster is a multi-AZ cluster.
+                    items:
+                      type: string
+                    type: array
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        LastTransitionTime is the last time this condition transitioned from one
+                        status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        A Message containing details about this condition's last transition from
+                        one status to another, if any.
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        ObservedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: |-
+                        Type of this condition. At most one of each condition type may apply to
+                        a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+                x-kubernetes-list-map-keys:
+                - type
+                x-kubernetes-list-type: map
+              observedGeneration:
+                description: |-
+                  ObservedGeneration is the latest metadata.generation
+                  which resulted in either a ready state, or stalled due to error
+                  it can not recover from without human intervention.
+                format: int64
+                type: integer
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
