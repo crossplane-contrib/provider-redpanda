@@ -1,4 +1,4 @@
-apiVersion: template.crossplane.io/v1beta1
+apiVersion: redpanda.crossplane.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: default

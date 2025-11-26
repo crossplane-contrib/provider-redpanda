@@ -1,0 +1,18 @@
+apiVersion: redpanda.redpanda.crossplane.io/v1alpha1
+kind: Topic
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/topic
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    allowDeletion: true
+    clusterApiUrl: "https://d4i9bhmthk14h3bmlb20.console.eu-central-1.mpx.prd.cloud.redpanda.com"
+    configuration:
+      cleanup.policy: delete
+      retention.ms: "604800000"
+    name: crossplane-example-topic
+    partitionCount: 3
+    replicationFactor: 3

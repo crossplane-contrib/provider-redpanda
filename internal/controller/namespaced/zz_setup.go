@@ -9,16 +9,16 @@ import (
 
 	"github.com/crossplane/upjet/v2/pkg/controller"
 
-	resource "github.com/crossplane/upjet-provider-template/internal/controller/namespaced/null/resource"
-	providerconfig "github.com/crossplane/upjet-provider-template/internal/controller/namespaced/providerconfig"
+	providerconfig "github.com/crossplane-contrib/provider-redpanda/internal/controller/namespaced/providerconfig"
+	topic "github.com/crossplane-contrib/provider-redpanda/internal/controller/namespaced/redpanda/topic"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		resource.Setup,
 		providerconfig.Setup,
+		topic.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err
@@ -31,8 +31,8 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 // the supplied manager gated.
 func SetupGated(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		resource.SetupGated,
 		providerconfig.SetupGated,
+		topic.SetupGated,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err
