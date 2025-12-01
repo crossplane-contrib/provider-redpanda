@@ -6,6 +6,7 @@ import (
 
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 	"github.com/pkg/errors"
+	"github.com/redpanda-data/terraform-provider-redpanda/redpanda"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -63,6 +64,7 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		if v, ok := creds[clientSecret]; ok {
 			ps.Configuration[clientSecret] = v
 		}
+		ps.FrameworkProvider = redpanda.New(nil, "prod", "v1.3.5")()
 		return ps, nil
 	}
 }
