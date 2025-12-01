@@ -8,7 +8,7 @@ var terraformPluginFrameworkExternalNameConfigs = map[string]config.ExternalName
 	"redpanda_acl":                 config.IdentifierFromProvider,
 	"redpanda_cluster":             config.IdentifierFromProvider,
 	"redpanda_network":             config.IdentifierFromProvider,
-	"redpanda_resource_group":      config.IdentifierFromProvider,
+	"redpanda_resource_group":      config.FrameworkResourceWithComputedIdentifier("id", "FC32AC7C-64FC-4D1A-BABC-D37B865C143B"),
 	"redpanda_role_assignment":     config.IdentifierFromProvider,
 	"redpanda_schema":              config.IdentifierFromProvider,
 	"redpanda_schema_registry_acl": config.IdentifierFromProvider,
