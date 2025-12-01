@@ -10,7 +10,9 @@ spec:
   forProvider:
     name: example-serverless-cluster
     serverlessRegion: eu-central-1
-    resourceGroupId: a89841e2-9433-4630-b0cb-19a46cce7f13
+    resourceGroupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
 
 ---
 

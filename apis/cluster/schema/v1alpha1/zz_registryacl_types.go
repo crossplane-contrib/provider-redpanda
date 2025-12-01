@@ -21,7 +21,17 @@ type RegistryACLInitParameters struct {
 
 	// (String) The ID of the cluster where the Schema Registry ACL will be created
 	// The ID of the cluster where the Schema Registry ACL will be created
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.Cluster
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// Reference to a Cluster in redpanda to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster in redpanda to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
 
 	// (String) The host address to use for this ACL. Use '*' for wildcard
 	// The host address to use for this ACL. Use '*' for wildcard
@@ -111,8 +121,18 @@ type RegistryACLParameters struct {
 
 	// (String) The ID of the cluster where the Schema Registry ACL will be created
 	// The ID of the cluster where the Schema Registry ACL will be created
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.Cluster
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// Reference to a Cluster in redpanda to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster in redpanda to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
 
 	// (String) The host address to use for this ACL. Use '*' for wildcard
 	// The host address to use for this ACL. Use '*' for wildcard
@@ -196,7 +216,6 @@ type RegistryACLStatus struct {
 type RegistryACL struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clusterId) || (has(self.initProvider) && has(self.initProvider.clusterId))",message="spec.forProvider.clusterId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.host) || (has(self.initProvider) && has(self.initProvider.host))",message="spec.forProvider.host is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.operation) || (has(self.initProvider) && has(self.initProvider.operation))",message="spec.forProvider.operation is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.patternType) || (has(self.initProvider) && has(self.initProvider.patternType))",message="spec.forProvider.patternType is a required parameter"

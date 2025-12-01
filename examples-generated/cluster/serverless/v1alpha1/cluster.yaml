@@ -10,7 +10,9 @@ spec:
   forProvider:
     name: example-serverless-cluster
     region: us-west-2
-    resourceGroupId: ${redpanda_resource_group.example.id}
+    resourceGroupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
 
 ---
 

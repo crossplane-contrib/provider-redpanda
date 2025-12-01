@@ -230,7 +230,17 @@ type NetworkInitParameters struct {
 
 	// (String) The ID of the resource group in which to create the network
 	// The ID of the resource group in which to create the network
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/resource/v1alpha1.Group
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
+
+	// Reference to a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDRef *v1.NamespacedReference `json:"resourceGroupIdRef,omitempty" tf:"-"`
+
+	// Selector for a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDSelector *v1.NamespacedSelector `json:"resourceGroupIdSelector,omitempty" tf:"-"`
 
 	// (Attributes) (see below for nested schema)
 	Timeouts *NetworkTimeoutsInitParameters `json:"timeouts,omitempty" tf:"timeouts,omitempty"`
@@ -305,8 +315,18 @@ type NetworkParameters struct {
 
 	// (String) The ID of the resource group in which to create the network
 	// The ID of the resource group in which to create the network
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/resource/v1alpha1.Group
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
+
+	// Reference to a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDRef *v1.NamespacedReference `json:"resourceGroupIdRef,omitempty" tf:"-"`
+
+	// Selector for a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDSelector *v1.NamespacedSelector `json:"resourceGroupIdSelector,omitempty" tf:"-"`
 
 	// (Attributes) (see below for nested schema)
 	// +kubebuilder:validation:Optional
@@ -432,7 +452,6 @@ type Network struct {
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clusterType) || (has(self.initProvider) && has(self.initProvider.clusterType))",message="spec.forProvider.clusterType is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.region) || (has(self.initProvider) && has(self.initProvider.region))",message="spec.forProvider.region is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resourceGroupId) || (has(self.initProvider) && has(self.initProvider.resourceGroupId))",message="spec.forProvider.resourceGroupId is a required parameter"
 	Spec   NetworkSpec   `json:"spec"`
 	Status NetworkStatus `json:"status,omitempty"`
 }

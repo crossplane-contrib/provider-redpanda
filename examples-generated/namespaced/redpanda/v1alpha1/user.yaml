@@ -10,7 +10,9 @@ metadata:
 spec:
   forProvider:
     allowDeletion: true
-    clusterApiUrl: ${redpanda_cluster.example.cluster_api_url}
+    clusterApiUrlSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     mechanism: scram-sha-256
     name: example-user
     passwordSecretRef:
@@ -30,13 +32,23 @@ metadata:
   namespace: crossplane-system
 spec:
   forProvider:
-    cloudProvider: aws
-    clusterType: dedicated
+    cloudProviderSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    clusterTypeSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     connectionType: public
     name: example-cluster
-    networkId: ${redpanda_network.example.id}
-    region: us-west-2
-    resourceGroupId: ${redpanda_resource_group.example.id}
+    networkIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    regionSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    resourceGroupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
     throughputTier: tier-1-aws
     zones:
     - us-west-2a
@@ -61,7 +73,9 @@ spec:
     clusterType: dedicated
     name: example-network
     region: us-west-2
-    resourceGroupId: ${redpanda_resource_group.example.id}
+    resourceGroupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
 
 ---
 

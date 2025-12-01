@@ -5,6 +5,7 @@ import (
 	_ "embed"
 
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
+	"github.com/crossplane/upjet/v2/pkg/registry/reference"
 	"github.com/redpanda-data/terraform-provider-redpanda/redpanda"
 )
 
@@ -26,6 +27,7 @@ func GetProvider() *ujconfig.Provider {
 		ujconfig.WithIncludeList(nil),
 		ujconfig.WithTerraformPluginFrameworkIncludeList(ExternalNameConfigured()),
 		ujconfig.WithTerraformPluginFrameworkProvider(redpanda.New(nil, "prod", "v1.3.5")()),
+		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),
@@ -48,6 +50,7 @@ func GetProviderNamespaced() *ujconfig.Provider {
 		ujconfig.WithIncludeList(nil),
 		ujconfig.WithTerraformPluginFrameworkIncludeList(ExternalNameConfigured()),
 		ujconfig.WithTerraformPluginFrameworkProvider(redpanda.New(nil, "prod", "v1.3.5")()),
+		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithDefaultResourceOptions(
 			ExternalNameConfigurations(),

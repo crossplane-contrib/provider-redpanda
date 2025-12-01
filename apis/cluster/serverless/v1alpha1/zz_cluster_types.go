@@ -21,7 +21,17 @@ type ClusterInitParameters struct {
 
 	// (String) The ID of the Resource Group in which to create the serverless cluster
 	// The ID of the Resource Group in which to create the serverless cluster
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/resource/v1alpha1.Group
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
+
+	// Reference to a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDRef *v1.Reference `json:"resourceGroupIdRef,omitempty" tf:"-"`
+
+	// Selector for a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDSelector *v1.Selector `json:"resourceGroupIdSelector,omitempty" tf:"-"`
 
 	// (String) Redpanda specific region of the serverless cluster
 	// Redpanda specific region of the serverless cluster
@@ -59,8 +69,18 @@ type ClusterParameters struct {
 
 	// (String) The ID of the Resource Group in which to create the serverless cluster
 	// The ID of the Resource Group in which to create the serverless cluster
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/resource/v1alpha1.Group
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
+
+	// Reference to a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDRef *v1.Reference `json:"resourceGroupIdRef,omitempty" tf:"-"`
+
+	// Selector for a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDSelector *v1.Selector `json:"resourceGroupIdSelector,omitempty" tf:"-"`
 
 	// (String) Redpanda specific region of the serverless cluster
 	// Redpanda specific region of the serverless cluster
@@ -105,7 +125,6 @@ type Cluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resourceGroupId) || (has(self.initProvider) && has(self.initProvider.resourceGroupId))",message="spec.forProvider.resourceGroupId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.serverlessRegion) || (has(self.initProvider) && has(self.initProvider.serverlessRegion))",message="spec.forProvider.serverlessRegion is a required parameter"
 	Spec   ClusterSpec   `json:"spec"`
 	Status ClusterStatus `json:"status,omitempty"`

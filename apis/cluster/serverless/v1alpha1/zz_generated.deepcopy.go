@@ -9,6 +9,7 @@
 package v1alpha1
 
 import (
+	"github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -51,6 +52,16 @@ func (in *ClusterInitParameters) DeepCopyInto(out *ClusterInitParameters) {
 		in, out := &in.ResourceGroupID, &out.ResourceGroupID
 		*out = new(string)
 		**out = **in
+	}
+	if in.ResourceGroupIDRef != nil {
+		in, out := &in.ResourceGroupIDRef, &out.ResourceGroupIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ResourceGroupIDSelector != nil {
+		in, out := &in.ResourceGroupIDSelector, &out.ResourceGroupIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ServerlessRegion != nil {
 		in, out := &in.ServerlessRegion, &out.ServerlessRegion
@@ -153,6 +164,16 @@ func (in *ClusterParameters) DeepCopyInto(out *ClusterParameters) {
 		in, out := &in.ResourceGroupID, &out.ResourceGroupID
 		*out = new(string)
 		**out = **in
+	}
+	if in.ResourceGroupIDRef != nil {
+		in, out := &in.ResourceGroupIDRef, &out.ResourceGroupIDRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ResourceGroupIDSelector != nil {
+		in, out := &in.ResourceGroupIDSelector, &out.ResourceGroupIDSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ServerlessRegion != nil {
 		in, out := &in.ServerlessRegion, &out.ServerlessRegion

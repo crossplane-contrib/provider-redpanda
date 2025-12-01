@@ -417,14 +417,34 @@ type ClusterInitParameters struct {
 
 	// (String) Cloud provider where resources are created.
 	// Cloud provider where resources are created.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Network
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("cloud_provider",false)
 	CloudProvider *string `json:"cloudProvider,omitempty" tf:"cloud_provider,omitempty"`
+
+	// Reference to a Network in redpanda to populate cloudProvider.
+	// +kubebuilder:validation:Optional
+	CloudProviderRef *v1.NamespacedReference `json:"cloudProviderRef,omitempty" tf:"-"`
+
+	// Selector for a Network in redpanda to populate cloudProvider.
+	// +kubebuilder:validation:Optional
+	CloudProviderSelector *v1.NamespacedSelector `json:"cloudProviderSelector,omitempty" tf:"-"`
 
 	// (Attributes) Configuration for the cluster. (see below for nested schema)
 	ClusterConfiguration *ClusterConfigurationInitParameters `json:"clusterConfiguration,omitempty" tf:"cluster_configuration,omitempty"`
 
 	// (String) Cluster type. Type is immutable and can only be set on cluster creation. Can be either byoc or dedicated.
 	// Cluster type. Type is immutable and can only be set on cluster creation. Can be either byoc or dedicated.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Network
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("cluster_type",false)
 	ClusterType *string `json:"clusterType,omitempty" tf:"cluster_type,omitempty"`
+
+	// Reference to a Network in redpanda to populate clusterType.
+	// +kubebuilder:validation:Optional
+	ClusterTypeRef *v1.NamespacedReference `json:"clusterTypeRef,omitempty" tf:"-"`
+
+	// Selector for a Network in redpanda to populate clusterType.
+	// +kubebuilder:validation:Optional
+	ClusterTypeSelector *v1.NamespacedSelector `json:"clusterTypeSelector,omitempty" tf:"-"`
 
 	// practice.
 	// Cluster connection type. Private clusters are not exposed to the internet. For BYOC clusters, private is best-practice.
@@ -458,7 +478,17 @@ type ClusterInitParameters struct {
 
 	// (String) Network ID where cluster is placed.
 	// Network ID where cluster is placed.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Network
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	NetworkID *string `json:"networkId,omitempty" tf:"network_id,omitempty"`
+
+	// Reference to a Network in redpanda to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDRef *v1.NamespacedReference `json:"networkIdRef,omitempty" tf:"-"`
+
+	// Selector for a Network in redpanda to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDSelector *v1.NamespacedSelector `json:"networkIdSelector,omitempty" tf:"-"`
 
 	// only topics from this cluster.
 	// IDs of clusters that can create read-only topics from this cluster.
@@ -470,11 +500,31 @@ type ClusterInitParameters struct {
 
 	// (String) Cloud provider region. Region represents the name of the region where the cluster will be provisioned.
 	// Cloud provider region. Region represents the name of the region where the cluster will be provisioned.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Network
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("region",false)
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
+
+	// Reference to a Network in redpanda to populate region.
+	// +kubebuilder:validation:Optional
+	RegionRef *v1.NamespacedReference `json:"regionRef,omitempty" tf:"-"`
+
+	// Selector for a Network in redpanda to populate region.
+	// +kubebuilder:validation:Optional
+	RegionSelector *v1.NamespacedSelector `json:"regionSelector,omitempty" tf:"-"`
 
 	// (String) Resource group ID of the cluster.
 	// Resource group ID of the cluster.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/resource/v1alpha1.Group
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
+
+	// Reference to a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDRef *v1.NamespacedReference `json:"resourceGroupIdRef,omitempty" tf:"-"`
+
+	// Selector for a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDSelector *v1.NamespacedSelector `json:"resourceGroupIdSelector,omitempty" tf:"-"`
 
 	// (Attributes) Schema Registry properties. (see below for nested schema)
 	SchemaRegistry *SchemaRegistryInitParameters `json:"schemaRegistry,omitempty" tf:"schema_registry,omitempty"`
@@ -628,8 +678,18 @@ type ClusterParameters struct {
 
 	// (String) Cloud provider where resources are created.
 	// Cloud provider where resources are created.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Network
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("cloud_provider",false)
 	// +kubebuilder:validation:Optional
 	CloudProvider *string `json:"cloudProvider,omitempty" tf:"cloud_provider,omitempty"`
+
+	// Reference to a Network in redpanda to populate cloudProvider.
+	// +kubebuilder:validation:Optional
+	CloudProviderRef *v1.NamespacedReference `json:"cloudProviderRef,omitempty" tf:"-"`
+
+	// Selector for a Network in redpanda to populate cloudProvider.
+	// +kubebuilder:validation:Optional
+	CloudProviderSelector *v1.NamespacedSelector `json:"cloudProviderSelector,omitempty" tf:"-"`
 
 	// (Attributes) Configuration for the cluster. (see below for nested schema)
 	// +kubebuilder:validation:Optional
@@ -637,8 +697,18 @@ type ClusterParameters struct {
 
 	// (String) Cluster type. Type is immutable and can only be set on cluster creation. Can be either byoc or dedicated.
 	// Cluster type. Type is immutable and can only be set on cluster creation. Can be either byoc or dedicated.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Network
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("cluster_type",false)
 	// +kubebuilder:validation:Optional
 	ClusterType *string `json:"clusterType,omitempty" tf:"cluster_type,omitempty"`
+
+	// Reference to a Network in redpanda to populate clusterType.
+	// +kubebuilder:validation:Optional
+	ClusterTypeRef *v1.NamespacedReference `json:"clusterTypeRef,omitempty" tf:"-"`
+
+	// Selector for a Network in redpanda to populate clusterType.
+	// +kubebuilder:validation:Optional
+	ClusterTypeSelector *v1.NamespacedSelector `json:"clusterTypeSelector,omitempty" tf:"-"`
 
 	// practice.
 	// Cluster connection type. Private clusters are not exposed to the internet. For BYOC clusters, private is best-practice.
@@ -681,8 +751,18 @@ type ClusterParameters struct {
 
 	// (String) Network ID where cluster is placed.
 	// Network ID where cluster is placed.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Network
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	NetworkID *string `json:"networkId,omitempty" tf:"network_id,omitempty"`
+
+	// Reference to a Network in redpanda to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDRef *v1.NamespacedReference `json:"networkIdRef,omitempty" tf:"-"`
+
+	// Selector for a Network in redpanda to populate networkId.
+	// +kubebuilder:validation:Optional
+	NetworkIDSelector *v1.NamespacedSelector `json:"networkIdSelector,omitempty" tf:"-"`
 
 	// only topics from this cluster.
 	// IDs of clusters that can create read-only topics from this cluster.
@@ -696,13 +776,33 @@ type ClusterParameters struct {
 
 	// (String) Cloud provider region. Region represents the name of the region where the cluster will be provisioned.
 	// Cloud provider region. Region represents the name of the region where the cluster will be provisioned.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Network
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("region",false)
 	// +kubebuilder:validation:Optional
 	Region *string `json:"region,omitempty" tf:"region,omitempty"`
 
+	// Reference to a Network in redpanda to populate region.
+	// +kubebuilder:validation:Optional
+	RegionRef *v1.NamespacedReference `json:"regionRef,omitempty" tf:"-"`
+
+	// Selector for a Network in redpanda to populate region.
+	// +kubebuilder:validation:Optional
+	RegionSelector *v1.NamespacedSelector `json:"regionSelector,omitempty" tf:"-"`
+
 	// (String) Resource group ID of the cluster.
 	// Resource group ID of the cluster.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/resource/v1alpha1.Group
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	ResourceGroupID *string `json:"resourceGroupId,omitempty" tf:"resource_group_id,omitempty"`
+
+	// Reference to a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDRef *v1.NamespacedReference `json:"resourceGroupIdRef,omitempty" tf:"-"`
+
+	// Selector for a Group in resource to populate resourceGroupId.
+	// +kubebuilder:validation:Optional
+	ResourceGroupIDSelector *v1.NamespacedSelector `json:"resourceGroupIdSelector,omitempty" tf:"-"`
 
 	// (Attributes) Schema Registry properties. (see below for nested schema)
 	// +kubebuilder:validation:Optional
@@ -2022,13 +2122,8 @@ type ClusterStatus struct {
 type Cluster struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.cloudProvider) || (has(self.initProvider) && has(self.initProvider.cloudProvider))",message="spec.forProvider.cloudProvider is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clusterType) || (has(self.initProvider) && has(self.initProvider.clusterType))",message="spec.forProvider.clusterType is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.connectionType) || (has(self.initProvider) && has(self.initProvider.connectionType))",message="spec.forProvider.connectionType is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.networkId) || (has(self.initProvider) && has(self.initProvider.networkId))",message="spec.forProvider.networkId is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.region) || (has(self.initProvider) && has(self.initProvider.region))",message="spec.forProvider.region is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resourceGroupId) || (has(self.initProvider) && has(self.initProvider.resourceGroupId))",message="spec.forProvider.resourceGroupId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.throughputTier) || (has(self.initProvider) && has(self.initProvider.throughputTier))",message="spec.forProvider.throughputTier is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.zones) || (has(self.initProvider) && has(self.initProvider.zones))",message="spec.forProvider.zones is a required parameter"
 	Spec   ClusterSpec   `json:"spec"`

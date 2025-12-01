@@ -9,6 +9,7 @@
 package v1alpha1
 
 import (
+	"github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -47,10 +48,30 @@ func (in *AssignmentInitParameters) DeepCopyInto(out *AssignmentInitParameters) 
 		*out = new(string)
 		**out = **in
 	}
+	if in.ClusterAPIURLRef != nil {
+		in, out := &in.ClusterAPIURLRef, &out.ClusterAPIURLRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterAPIURLSelector != nil {
+		in, out := &in.ClusterAPIURLSelector, &out.ClusterAPIURLSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Principal != nil {
 		in, out := &in.Principal, &out.Principal
 		*out = new(string)
 		**out = **in
+	}
+	if in.PrincipalRef != nil {
+		in, out := &in.PrincipalRef, &out.PrincipalRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.PrincipalSelector != nil {
+		in, out := &in.PrincipalSelector, &out.PrincipalSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.RoleName != nil {
 		in, out := &in.RoleName, &out.RoleName
@@ -144,10 +165,30 @@ func (in *AssignmentParameters) DeepCopyInto(out *AssignmentParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ClusterAPIURLRef != nil {
+		in, out := &in.ClusterAPIURLRef, &out.ClusterAPIURLRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterAPIURLSelector != nil {
+		in, out := &in.ClusterAPIURLSelector, &out.ClusterAPIURLSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Principal != nil {
 		in, out := &in.Principal, &out.Principal
 		*out = new(string)
 		**out = **in
+	}
+	if in.PrincipalRef != nil {
+		in, out := &in.PrincipalRef, &out.PrincipalRef
+		*out = new(v1.Reference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.PrincipalSelector != nil {
+		in, out := &in.PrincipalSelector, &out.PrincipalSelector
+		*out = new(v1.Selector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.RoleName != nil {
 		in, out := &in.RoleName, &out.RoleName

@@ -9,6 +9,7 @@
 package v1alpha1
 
 import (
+	"github.com/crossplane/crossplane-runtime/v2/apis/common/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -52,6 +53,16 @@ func (in *ACLInitParameters) DeepCopyInto(out *ACLInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ClusterAPIURLRef != nil {
+		in, out := &in.ClusterAPIURLRef, &out.ClusterAPIURLRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterAPIURLSelector != nil {
+		in, out := &in.ClusterAPIURLSelector, &out.ClusterAPIURLSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Host != nil {
 		in, out := &in.Host, &out.Host
 		*out = new(string)
@@ -76,6 +87,16 @@ func (in *ACLInitParameters) DeepCopyInto(out *ACLInitParameters) {
 		in, out := &in.ResourceName, &out.ResourceName
 		*out = new(string)
 		**out = **in
+	}
+	if in.ResourceNameRef != nil {
+		in, out := &in.ResourceNameRef, &out.ResourceNameRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ResourceNameSelector != nil {
+		in, out := &in.ResourceNameSelector, &out.ResourceNameSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ResourcePatternType != nil {
 		in, out := &in.ResourcePatternType, &out.ResourcePatternType
@@ -209,6 +230,16 @@ func (in *ACLParameters) DeepCopyInto(out *ACLParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ClusterAPIURLRef != nil {
+		in, out := &in.ClusterAPIURLRef, &out.ClusterAPIURLRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterAPIURLSelector != nil {
+		in, out := &in.ClusterAPIURLSelector, &out.ClusterAPIURLSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Host != nil {
 		in, out := &in.Host, &out.Host
 		*out = new(string)
@@ -233,6 +264,16 @@ func (in *ACLParameters) DeepCopyInto(out *ACLParameters) {
 		in, out := &in.ResourceName, &out.ResourceName
 		*out = new(string)
 		**out = **in
+	}
+	if in.ResourceNameRef != nil {
+		in, out := &in.ResourceNameRef, &out.ResourceNameRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ResourceNameSelector != nil {
+		in, out := &in.ResourceNameSelector, &out.ResourceNameSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ResourcePatternType != nil {
 		in, out := &in.ResourcePatternType, &out.ResourcePatternType
@@ -1165,6 +1206,16 @@ func (in *ClusterInitParameters) DeepCopyInto(out *ClusterInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.CloudProviderRef != nil {
+		in, out := &in.CloudProviderRef, &out.CloudProviderRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.CloudProviderSelector != nil {
+		in, out := &in.CloudProviderSelector, &out.CloudProviderSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.ClusterConfiguration != nil {
 		in, out := &in.ClusterConfiguration, &out.ClusterConfiguration
 		*out = new(ClusterConfigurationInitParameters)
@@ -1174,6 +1225,16 @@ func (in *ClusterInitParameters) DeepCopyInto(out *ClusterInitParameters) {
 		in, out := &in.ClusterType, &out.ClusterType
 		*out = new(string)
 		**out = **in
+	}
+	if in.ClusterTypeRef != nil {
+		in, out := &in.ClusterTypeRef, &out.ClusterTypeRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterTypeSelector != nil {
+		in, out := &in.ClusterTypeSelector, &out.ClusterTypeSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ConnectionType != nil {
 		in, out := &in.ConnectionType, &out.ConnectionType
@@ -1225,6 +1286,16 @@ func (in *ClusterInitParameters) DeepCopyInto(out *ClusterInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.NetworkIDRef != nil {
+		in, out := &in.NetworkIDRef, &out.NetworkIDRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.NetworkIDSelector != nil {
+		in, out := &in.NetworkIDSelector, &out.NetworkIDSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.ReadReplicaClusterIds != nil {
 		in, out := &in.ReadReplicaClusterIds, &out.ReadReplicaClusterIds
 		*out = make([]*string, len(*in))
@@ -1246,10 +1317,30 @@ func (in *ClusterInitParameters) DeepCopyInto(out *ClusterInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.RegionRef != nil {
+		in, out := &in.RegionRef, &out.RegionRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.RegionSelector != nil {
+		in, out := &in.RegionSelector, &out.RegionSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.ResourceGroupID != nil {
 		in, out := &in.ResourceGroupID, &out.ResourceGroupID
 		*out = new(string)
 		**out = **in
+	}
+	if in.ResourceGroupIDRef != nil {
+		in, out := &in.ResourceGroupIDRef, &out.ResourceGroupIDRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ResourceGroupIDSelector != nil {
+		in, out := &in.ResourceGroupIDSelector, &out.ResourceGroupIDSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SchemaRegistry != nil {
 		in, out := &in.SchemaRegistry, &out.SchemaRegistry
@@ -1558,6 +1649,16 @@ func (in *ClusterParameters) DeepCopyInto(out *ClusterParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.CloudProviderRef != nil {
+		in, out := &in.CloudProviderRef, &out.CloudProviderRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.CloudProviderSelector != nil {
+		in, out := &in.CloudProviderSelector, &out.CloudProviderSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.ClusterConfiguration != nil {
 		in, out := &in.ClusterConfiguration, &out.ClusterConfiguration
 		*out = new(ClusterConfigurationParameters)
@@ -1567,6 +1668,16 @@ func (in *ClusterParameters) DeepCopyInto(out *ClusterParameters) {
 		in, out := &in.ClusterType, &out.ClusterType
 		*out = new(string)
 		**out = **in
+	}
+	if in.ClusterTypeRef != nil {
+		in, out := &in.ClusterTypeRef, &out.ClusterTypeRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterTypeSelector != nil {
+		in, out := &in.ClusterTypeSelector, &out.ClusterTypeSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.ConnectionType != nil {
 		in, out := &in.ConnectionType, &out.ConnectionType
@@ -1618,6 +1729,16 @@ func (in *ClusterParameters) DeepCopyInto(out *ClusterParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.NetworkIDRef != nil {
+		in, out := &in.NetworkIDRef, &out.NetworkIDRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.NetworkIDSelector != nil {
+		in, out := &in.NetworkIDSelector, &out.NetworkIDSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.ReadReplicaClusterIds != nil {
 		in, out := &in.ReadReplicaClusterIds, &out.ReadReplicaClusterIds
 		*out = make([]*string, len(*in))
@@ -1639,10 +1760,30 @@ func (in *ClusterParameters) DeepCopyInto(out *ClusterParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.RegionRef != nil {
+		in, out := &in.RegionRef, &out.RegionRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.RegionSelector != nil {
+		in, out := &in.RegionSelector, &out.RegionSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.ResourceGroupID != nil {
 		in, out := &in.ResourceGroupID, &out.ResourceGroupID
 		*out = new(string)
 		**out = **in
+	}
+	if in.ResourceGroupIDRef != nil {
+		in, out := &in.ResourceGroupIDRef, &out.ResourceGroupIDRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ResourceGroupIDSelector != nil {
+		in, out := &in.ResourceGroupIDSelector, &out.ResourceGroupIDSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.SchemaRegistry != nil {
 		in, out := &in.SchemaRegistry, &out.SchemaRegistry
@@ -3900,6 +4041,16 @@ func (in *NetworkInitParameters) DeepCopyInto(out *NetworkInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ResourceGroupIDRef != nil {
+		in, out := &in.ResourceGroupIDRef, &out.ResourceGroupIDRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ResourceGroupIDSelector != nil {
+		in, out := &in.ResourceGroupIDSelector, &out.ResourceGroupIDSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Timeouts != nil {
 		in, out := &in.Timeouts, &out.Timeouts
 		*out = new(NetworkTimeoutsInitParameters)
@@ -4046,6 +4197,16 @@ func (in *NetworkParameters) DeepCopyInto(out *NetworkParameters) {
 		in, out := &in.ResourceGroupID, &out.ResourceGroupID
 		*out = new(string)
 		**out = **in
+	}
+	if in.ResourceGroupIDRef != nil {
+		in, out := &in.ResourceGroupIDRef, &out.ResourceGroupIDRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ResourceGroupIDSelector != nil {
+		in, out := &in.ResourceGroupIDSelector, &out.ResourceGroupIDSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Timeouts != nil {
 		in, out := &in.Timeouts, &out.Timeouts
@@ -4917,6 +5078,16 @@ func (in *SchemaInitParameters) DeepCopyInto(out *SchemaInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ClusterIDRef != nil {
+		in, out := &in.ClusterIDRef, &out.ClusterIDRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterIDSelector != nil {
+		in, out := &in.ClusterIDSelector, &out.ClusterIDSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Compatibility != nil {
 		in, out := &in.Compatibility, &out.Compatibility
 		*out = new(string)
@@ -4949,6 +5120,16 @@ func (in *SchemaInitParameters) DeepCopyInto(out *SchemaInitParameters) {
 		in, out := &in.Username, &out.Username
 		*out = new(string)
 		**out = **in
+	}
+	if in.UsernameRef != nil {
+		in, out := &in.UsernameRef, &out.UsernameRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.UsernameSelector != nil {
+		in, out := &in.UsernameSelector, &out.UsernameSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -5074,6 +5255,16 @@ func (in *SchemaParameters) DeepCopyInto(out *SchemaParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ClusterIDRef != nil {
+		in, out := &in.ClusterIDRef, &out.ClusterIDRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterIDSelector != nil {
+		in, out := &in.ClusterIDSelector, &out.ClusterIDSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Compatibility != nil {
 		in, out := &in.Compatibility, &out.Compatibility
 		*out = new(string)
@@ -5106,6 +5297,16 @@ func (in *SchemaParameters) DeepCopyInto(out *SchemaParameters) {
 		in, out := &in.Username, &out.Username
 		*out = new(string)
 		**out = **in
+	}
+	if in.UsernameRef != nil {
+		in, out := &in.UsernameRef, &out.UsernameRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.UsernameSelector != nil {
+		in, out := &in.UsernameSelector, &out.UsernameSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 }
 
@@ -5922,6 +6123,16 @@ func (in *TopicInitParameters) DeepCopyInto(out *TopicInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ClusterAPIURLRef != nil {
+		in, out := &in.ClusterAPIURLRef, &out.ClusterAPIURLRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterAPIURLSelector != nil {
+		in, out := &in.ClusterAPIURLSelector, &out.ClusterAPIURLSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Configuration != nil {
 		in, out := &in.Configuration, &out.Configuration
 		*out = make(map[string]*string, len(*in))
@@ -6071,6 +6282,16 @@ func (in *TopicParameters) DeepCopyInto(out *TopicParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ClusterAPIURLRef != nil {
+		in, out := &in.ClusterAPIURLRef, &out.ClusterAPIURLRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterAPIURLSelector != nil {
+		in, out := &in.ClusterAPIURLSelector, &out.ClusterAPIURLSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Configuration != nil {
 		in, out := &in.Configuration, &out.Configuration
 		*out = make(map[string]*string, len(*in))
@@ -6189,6 +6410,16 @@ func (in *UserInitParameters) DeepCopyInto(out *UserInitParameters) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ClusterAPIURLRef != nil {
+		in, out := &in.ClusterAPIURLRef, &out.ClusterAPIURLRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterAPIURLSelector != nil {
+		in, out := &in.ClusterAPIURLSelector, &out.ClusterAPIURLSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
+	}
 	if in.Mechanism != nil {
 		in, out := &in.Mechanism, &out.Mechanism
 		*out = new(string)
@@ -6296,6 +6527,16 @@ func (in *UserParameters) DeepCopyInto(out *UserParameters) {
 		in, out := &in.ClusterAPIURL, &out.ClusterAPIURL
 		*out = new(string)
 		**out = **in
+	}
+	if in.ClusterAPIURLRef != nil {
+		in, out := &in.ClusterAPIURLRef, &out.ClusterAPIURLRef
+		*out = new(v1.NamespacedReference)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.ClusterAPIURLSelector != nil {
+		in, out := &in.ClusterAPIURLSelector, &out.ClusterAPIURLSelector
+		*out = new(v1.NamespacedSelector)
+		(*in).DeepCopyInto(*out)
 	}
 	if in.Mechanism != nil {
 		in, out := &in.Mechanism, &out.Mechanism

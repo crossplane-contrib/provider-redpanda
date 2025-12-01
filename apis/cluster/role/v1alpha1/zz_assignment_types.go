@@ -17,11 +17,31 @@ type AssignmentInitParameters struct {
 
 	// (String) The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster
 	// The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.Cluster
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("cluster_api_url",true)
 	ClusterAPIURL *string `json:"clusterApiUrl,omitempty" tf:"cluster_api_url,omitempty"`
+
+	// Reference to a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLRef *v1.Reference `json:"clusterApiUrlRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLSelector *v1.Selector `json:"clusterApiUrlSelector,omitempty" tf:"-"`
 
 	// (String) The principal to assign the role to. Specify just the username (e.g., "john.doe")
 	// The principal to assign the role to. Specify just the username (e.g., `"john.doe"`)
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.User
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	Principal *string `json:"principal,omitempty" tf:"principal,omitempty"`
+
+	// Reference to a User in redpanda to populate principal.
+	// +kubebuilder:validation:Optional
+	PrincipalRef *v1.Reference `json:"principalRef,omitempty" tf:"-"`
+
+	// Selector for a User in redpanda to populate principal.
+	// +kubebuilder:validation:Optional
+	PrincipalSelector *v1.Selector `json:"principalSelector,omitempty" tf:"-"`
 
 	// (String) The name of the role to assign
 	// The name of the role to assign
@@ -50,13 +70,33 @@ type AssignmentParameters struct {
 
 	// (String) The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster
 	// The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.Cluster
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("cluster_api_url",true)
 	// +kubebuilder:validation:Optional
 	ClusterAPIURL *string `json:"clusterApiUrl,omitempty" tf:"cluster_api_url,omitempty"`
 
+	// Reference to a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLRef *v1.Reference `json:"clusterApiUrlRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLSelector *v1.Selector `json:"clusterApiUrlSelector,omitempty" tf:"-"`
+
 	// (String) The principal to assign the role to. Specify just the username (e.g., "john.doe")
 	// The principal to assign the role to. Specify just the username (e.g., `"john.doe"`)
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.User
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	Principal *string `json:"principal,omitempty" tf:"principal,omitempty"`
+
+	// Reference to a User in redpanda to populate principal.
+	// +kubebuilder:validation:Optional
+	PrincipalRef *v1.Reference `json:"principalRef,omitempty" tf:"-"`
+
+	// Selector for a User in redpanda to populate principal.
+	// +kubebuilder:validation:Optional
+	PrincipalSelector *v1.Selector `json:"principalSelector,omitempty" tf:"-"`
 
 	// (String) The name of the role to assign
 	// The name of the role to assign
@@ -100,8 +140,6 @@ type AssignmentStatus struct {
 type Assignment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clusterApiUrl) || (has(self.initProvider) && has(self.initProvider.clusterApiUrl))",message="spec.forProvider.clusterApiUrl is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.principal) || (has(self.initProvider) && has(self.initProvider.principal))",message="spec.forProvider.principal is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.roleName) || (has(self.initProvider) && has(self.initProvider.roleName))",message="spec.forProvider.roleName is a required parameter"
 	Spec   AssignmentSpec   `json:"spec"`
 	Status AssignmentStatus `json:"status,omitempty"`

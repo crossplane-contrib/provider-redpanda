@@ -21,7 +21,17 @@ type UserInitParameters struct {
 
 	// (String) The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster. It is generally a better idea to delete an existing resource and create a new one than to change this value unless you are planning to do state imports
 	// The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster. It is generally a better idea to delete an existing resource and create a new one than to change this value unless you are planning to do state imports
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.Cluster
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("cluster_api_url",true)
 	ClusterAPIURL *string `json:"clusterApiUrl,omitempty" tf:"cluster_api_url,omitempty"`
+
+	// Reference to a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLRef *v1.Reference `json:"clusterApiUrlRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLSelector *v1.Selector `json:"clusterApiUrlSelector,omitempty" tf:"-"`
 
 	// (String) Which authentication method to use, see https://docs.redpanda.com/current/manage/security/authentication/ for more information
 	// Which authentication method to use, see https://docs.redpanda.com/current/manage/security/authentication/ for more information
@@ -67,8 +77,18 @@ type UserParameters struct {
 
 	// (String) The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster. It is generally a better idea to delete an existing resource and create a new one than to change this value unless you are planning to do state imports
 	// The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster. It is generally a better idea to delete an existing resource and create a new one than to change this value unless you are planning to do state imports
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.Cluster
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("cluster_api_url",true)
 	// +kubebuilder:validation:Optional
 	ClusterAPIURL *string `json:"clusterApiUrl,omitempty" tf:"cluster_api_url,omitempty"`
+
+	// Reference to a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLRef *v1.Reference `json:"clusterApiUrlRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLSelector *v1.Selector `json:"clusterApiUrlSelector,omitempty" tf:"-"`
 
 	// (String) Which authentication method to use, see https://docs.redpanda.com/current/manage/security/authentication/ for more information
 	// Which authentication method to use, see https://docs.redpanda.com/current/manage/security/authentication/ for more information
@@ -122,7 +142,6 @@ type UserStatus struct {
 type User struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clusterApiUrl) || (has(self.initProvider) && has(self.initProvider.clusterApiUrl))",message="spec.forProvider.clusterApiUrl is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.name) || (has(self.initProvider) && has(self.initProvider.name))",message="spec.forProvider.name is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.passwordSecretRef)",message="spec.forProvider.passwordSecretRef is a required parameter"
 	Spec   UserSpec   `json:"spec"`

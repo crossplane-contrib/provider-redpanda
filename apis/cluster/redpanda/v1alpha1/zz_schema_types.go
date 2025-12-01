@@ -69,7 +69,17 @@ type SchemaInitParameters struct {
 
 	// (String) The ID of the cluster where the schema is stored.
 	// The ID of the cluster where the schema is stored.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.Cluster
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// Reference to a Cluster in redpanda to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster in redpanda to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
 
 	// (String) The compatibility level for schema evolution (BACKWARD, BACKWARD_TRANSITIVE, FORWARD, FORWARD_TRANSITIVE, FULL, FULL_TRANSITIVE, NONE). Defaults to BACKWARD.
 	// The compatibility level for schema evolution (BACKWARD, BACKWARD_TRANSITIVE, FORWARD, FORWARD_TRANSITIVE, FULL, FULL_TRANSITIVE, NONE). Defaults to BACKWARD.
@@ -96,7 +106,17 @@ type SchemaInitParameters struct {
 
 	// (String) The SASL username for Schema Registry authentication.
 	// The SASL username for Schema Registry authentication.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.User
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Reference to a User in redpanda to populate username.
+	// +kubebuilder:validation:Optional
+	UsernameRef *v1.Reference `json:"usernameRef,omitempty" tf:"-"`
+
+	// Selector for a User in redpanda to populate username.
+	// +kubebuilder:validation:Optional
+	UsernameSelector *v1.Selector `json:"usernameSelector,omitempty" tf:"-"`
 }
 
 type SchemaObservation struct {
@@ -149,8 +169,18 @@ type SchemaParameters struct {
 
 	// (String) The ID of the cluster where the schema is stored.
 	// The ID of the cluster where the schema is stored.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.Cluster
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractResourceID()
 	// +kubebuilder:validation:Optional
 	ClusterID *string `json:"clusterId,omitempty" tf:"cluster_id,omitempty"`
+
+	// Reference to a Cluster in redpanda to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDRef *v1.Reference `json:"clusterIdRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster in redpanda to populate clusterId.
+	// +kubebuilder:validation:Optional
+	ClusterIDSelector *v1.Selector `json:"clusterIdSelector,omitempty" tf:"-"`
 
 	// (String) The compatibility level for schema evolution (BACKWARD, BACKWARD_TRANSITIVE, FORWARD, FORWARD_TRANSITIVE, FULL, FULL_TRANSITIVE, NONE). Defaults to BACKWARD.
 	// The compatibility level for schema evolution (BACKWARD, BACKWARD_TRANSITIVE, FORWARD, FORWARD_TRANSITIVE, FULL, FULL_TRANSITIVE, NONE). Defaults to BACKWARD.
@@ -183,8 +213,18 @@ type SchemaParameters struct {
 
 	// (String) The SASL username for Schema Registry authentication.
 	// The SASL username for Schema Registry authentication.
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/cluster/redpanda/v1alpha1.User
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	Username *string `json:"username,omitempty" tf:"username,omitempty"`
+
+	// Reference to a User in redpanda to populate username.
+	// +kubebuilder:validation:Optional
+	UsernameRef *v1.Reference `json:"usernameRef,omitempty" tf:"-"`
+
+	// Selector for a User in redpanda to populate username.
+	// +kubebuilder:validation:Optional
+	UsernameSelector *v1.Selector `json:"usernameSelector,omitempty" tf:"-"`
 }
 
 // SchemaSpec defines the desired state of Schema
@@ -223,11 +263,9 @@ type SchemaStatus struct {
 type Schema struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clusterId) || (has(self.initProvider) && has(self.initProvider.clusterId))",message="spec.forProvider.clusterId is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.passwordSecretRef)",message="spec.forProvider.passwordSecretRef is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.schema) || (has(self.initProvider) && has(self.initProvider.schema))",message="spec.forProvider.schema is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.subject) || (has(self.initProvider) && has(self.initProvider.subject))",message="spec.forProvider.subject is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.username) || (has(self.initProvider) && has(self.initProvider.username))",message="spec.forProvider.username is a required parameter"
 	Spec   SchemaSpec   `json:"spec"`
 	Status SchemaStatus `json:"status,omitempty"`
 }

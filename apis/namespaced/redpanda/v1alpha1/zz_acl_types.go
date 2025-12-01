@@ -22,7 +22,17 @@ type ACLInitParameters struct {
 
 	// (String) The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster. It is generally a better idea to delete an existing resource and create a new one than to change this value unless you are planning to do state imports
 	// The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster. It is generally a better idea to delete an existing resource and create a new one than to change this value unless you are planning to do state imports
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Cluster
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("cluster_api_url",true)
 	ClusterAPIURL *string `json:"clusterApiUrl,omitempty" tf:"cluster_api_url,omitempty"`
+
+	// Reference to a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLRef *v1.NamespacedReference `json:"clusterApiUrlRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLSelector *v1.NamespacedSelector `json:"clusterApiUrlSelector,omitempty" tf:"-"`
 
 	// (String) The host address to use for this ACL
 	// The host address to use for this ACL
@@ -42,7 +52,17 @@ type ACLInitParameters struct {
 
 	// (String) The name of the resource this ACL entry will be on
 	// The name of the resource this ACL entry will be on
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Topic
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	ResourceName *string `json:"resourceName,omitempty" tf:"resource_name,omitempty"`
+
+	// Reference to a Topic in redpanda to populate resourceName.
+	// +kubebuilder:validation:Optional
+	ResourceNameRef *v1.NamespacedReference `json:"resourceNameRef,omitempty" tf:"-"`
+
+	// Selector for a Topic in redpanda to populate resourceName.
+	// +kubebuilder:validation:Optional
+	ResourceNameSelector *v1.NamespacedSelector `json:"resourceNameSelector,omitempty" tf:"-"`
 
 	// (String) The pattern type of the resource. It determines the strategy how the provided resource name is matched (LITERAL, MATCH, PREFIXED, etc ...) against the actual resource names
 	// The pattern type of the resource. It determines the strategy how the provided resource name is matched (LITERAL, MATCH, PREFIXED, etc ...) against the actual resource names
@@ -104,8 +124,18 @@ type ACLParameters struct {
 
 	// (String) The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster. It is generally a better idea to delete an existing resource and create a new one than to change this value unless you are planning to do state imports
 	// The cluster API URL. Changing this will prevent deletion of the resource on the existing cluster. It is generally a better idea to delete an existing resource and create a new one than to change this value unless you are planning to do state imports
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Cluster
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("cluster_api_url",true)
 	// +kubebuilder:validation:Optional
 	ClusterAPIURL *string `json:"clusterApiUrl,omitempty" tf:"cluster_api_url,omitempty"`
+
+	// Reference to a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLRef *v1.NamespacedReference `json:"clusterApiUrlRef,omitempty" tf:"-"`
+
+	// Selector for a Cluster in redpanda to populate clusterApiUrl.
+	// +kubebuilder:validation:Optional
+	ClusterAPIURLSelector *v1.NamespacedSelector `json:"clusterApiUrlSelector,omitempty" tf:"-"`
 
 	// (String) The host address to use for this ACL
 	// The host address to use for this ACL
@@ -129,8 +159,18 @@ type ACLParameters struct {
 
 	// (String) The name of the resource this ACL entry will be on
 	// The name of the resource this ACL entry will be on
+	// +crossplane:generate:reference:type=github.com/crossplane-contrib/provider-redpanda/apis/namespaced/redpanda/v1alpha1.Topic
+	// +crossplane:generate:reference:extractor=github.com/crossplane/upjet/v2/pkg/resource.ExtractParamPath("name",false)
 	// +kubebuilder:validation:Optional
 	ResourceName *string `json:"resourceName,omitempty" tf:"resource_name,omitempty"`
+
+	// Reference to a Topic in redpanda to populate resourceName.
+	// +kubebuilder:validation:Optional
+	ResourceNameRef *v1.NamespacedReference `json:"resourceNameRef,omitempty" tf:"-"`
+
+	// Selector for a Topic in redpanda to populate resourceName.
+	// +kubebuilder:validation:Optional
+	ResourceNameSelector *v1.NamespacedSelector `json:"resourceNameSelector,omitempty" tf:"-"`
 
 	// (String) The pattern type of the resource. It determines the strategy how the provided resource name is matched (LITERAL, MATCH, PREFIXED, etc ...) against the actual resource names
 	// The pattern type of the resource. It determines the strategy how the provided resource name is matched (LITERAL, MATCH, PREFIXED, etc ...) against the actual resource names
@@ -179,12 +219,10 @@ type ACLStatus struct {
 type ACL struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.clusterApiUrl) || (has(self.initProvider) && has(self.initProvider.clusterApiUrl))",message="spec.forProvider.clusterApiUrl is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.host) || (has(self.initProvider) && has(self.initProvider.host))",message="spec.forProvider.host is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.operation) || (has(self.initProvider) && has(self.initProvider.operation))",message="spec.forProvider.operation is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.permissionType) || (has(self.initProvider) && has(self.initProvider.permissionType))",message="spec.forProvider.permissionType is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.principal) || (has(self.initProvider) && has(self.initProvider.principal))",message="spec.forProvider.principal is a required parameter"
-	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resourceName) || (has(self.initProvider) && has(self.initProvider.resourceName))",message="spec.forProvider.resourceName is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resourcePatternType) || (has(self.initProvider) && has(self.initProvider.resourcePatternType))",message="spec.forProvider.resourcePatternType is a required parameter"
 	// +kubebuilder:validation:XValidation:rule="!('*' in self.managementPolicies || 'Create' in self.managementPolicies || 'Update' in self.managementPolicies) || has(self.forProvider.resourceType) || (has(self.initProvider) && has(self.initProvider.resourceType))",message="spec.forProvider.resourceType is a required parameter"
 	Spec   ACLSpec   `json:"spec"`
