@@ -1,0 +1,28 @@
+apiVersion: serverless.redpanda.crossplane.io/v1alpha1
+kind: Cluster
+metadata:
+  annotations:
+    meta.upbound.io/example-id: serverless/v1alpha1/cluster
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: example-serverless-cluster
+    serverlessRegion: eu-central-1
+    resourceGroupId: a89841e2-9433-4630-b0cb-19a46cce7f13
+
+---
+
+apiVersion: resource.redpanda.crossplane.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    # crossplane.io/external-name: "A867926E-15DA-4976-840E-21B58FC94651"
+    meta.upbound.io/example-id: serverless/v1alpha1/cluster
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: example-resource-group

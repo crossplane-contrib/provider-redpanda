@@ -4,9 +4,7 @@ import (
 	"github.com/crossplane/upjet/v2/pkg/config"
 )
 
-// ExternalNameConfigs contains all external name configurations for this
-// provider.
-var ExternalNameConfigs = map[string]config.ExternalName{
+var terraformPluginFrameworkExternalNameConfigs = map[string]config.ExternalName{
 	"redpanda_acl":                 config.IdentifierFromProvider,
 	"redpanda_cluster":             config.IdentifierFromProvider,
 	"redpanda_network":             config.IdentifierFromProvider,
@@ -24,7 +22,7 @@ var ExternalNameConfigs = map[string]config.ExternalName{
 // assuming they will be tested.
 func ExternalNameConfigurations() config.ResourceOption {
 	return func(r *config.Resource) {
-		if e, ok := ExternalNameConfigs[r.Name]; ok {
+		if e, ok := terraformPluginFrameworkExternalNameConfigs[r.Name]; ok {
 			r.ExternalName = e
 		}
 	}
@@ -33,9 +31,9 @@ func ExternalNameConfigurations() config.ResourceOption {
 // ExternalNameConfigured returns the list of all resources whose external name
 // is configured manually.
 func ExternalNameConfigured() []string {
-	l := make([]string, len(ExternalNameConfigs))
+	l := make([]string, len(terraformPluginFrameworkExternalNameConfigs))
 	i := 0
-	for name := range ExternalNameConfigs {
+	for name := range terraformPluginFrameworkExternalNameConfigs {
 		// $ is added to match the exact string since the format is regex.
 		l[i] = name + "$"
 		i++
