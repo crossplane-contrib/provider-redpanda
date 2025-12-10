@@ -9,7 +9,7 @@ require (
 	github.com/crossplane/crossplane-tools v0.0.0-20251017183449-dd4517244339
 	github.com/crossplane/upjet/v2 v2.2.0
 	github.com/pkg/errors v0.9.1
-	github.com/redpanda-data/terraform-provider-redpanda v1.3.5
+	github.com/redpanda-data/terraform-provider-redpanda v1.4.2
 	google.golang.org/grpc v1.75.1
 	k8s.io/api v0.33.0
 	k8s.io/apiextensions-apiserver v0.33.0

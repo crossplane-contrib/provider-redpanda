@@ -12,7 +12,7 @@ TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAF
 
 export TERRAFORM_PROVIDER_SOURCE ?= redpanda-data/redpanda
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/redpanda-data/terraform-provider-redpanda
-export TERRAFORM_PROVIDER_VERSION ?= 1.3.5
+export TERRAFORM_PROVIDER_VERSION ?= 1.4.2
 export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-redpanda
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://github.com/redpanda-data/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/releases/download/v$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_NATIVE_PROVIDER_BINARY ?= $(TERRAFORM_PROVIDER_DOWNLOAD_NAME)_v$(TERRAFORM_PROVIDER_VERSION)

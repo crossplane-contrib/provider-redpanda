@@ -533,7 +533,7 @@ type ClusterInitParameters struct {
 	// +mapType=granular
 	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
-	// Usage tier of the cluster. WARNING: Do not modify after it is set.
+	// Usage tier of the cluster.
 	ThroughputTier *string `json:"throughputTier,omitempty" tf:"throughput_tier,omitempty"`
 
 	// (Attributes) (see below for nested schema)
@@ -649,7 +649,7 @@ type ClusterObservation struct {
 	// +mapType=granular
 	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
-	// Usage tier of the cluster. WARNING: Do not modify after it is set.
+	// Usage tier of the cluster.
 	ThroughputTier *string `json:"throughputTier,omitempty" tf:"throughput_tier,omitempty"`
 
 	// (Attributes) (see below for nested schema)
@@ -813,7 +813,7 @@ type ClusterParameters struct {
 	// +mapType=granular
 	Tags map[string]*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
-	// Usage tier of the cluster. WARNING: Do not modify after it is set.
+	// Usage tier of the cluster.
 	// +kubebuilder:validation:Optional
 	ThroughputTier *string `json:"throughputTier,omitempty" tf:"throughput_tier,omitempty"`
 

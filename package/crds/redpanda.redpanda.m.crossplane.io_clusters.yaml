@@ -957,8 +957,7 @@ spec:
                     type: object
                     x-kubernetes-map-type: granular
                   throughputTier:
-                    description: 'Usage tier of the cluster. WARNING: Do not modify
-                      after it is set.'
+                    description: Usage tier of the cluster.
                     type: string
                   timeouts:
                     description: (Attributes) (see below for nested schema)
@@ -1899,8 +1898,7 @@ spec:
                     type: object
                     x-kubernetes-map-type: granular
                   throughputTier:
-                    description: 'Usage tier of the cluster. WARNING: Do not modify
-                      after it is set.'
+                    description: Usage tier of the cluster.
                     type: string
                   timeouts:
                     description: (Attributes) (see below for nested schema)
@@ -2887,8 +2885,7 @@ spec:
                     type: object
                     x-kubernetes-map-type: granular
                   throughputTier:
-                    description: 'Usage tier of the cluster. WARNING: Do not modify
-                      after it is set.'
+                    description: Usage tier of the cluster.
                     type: string
                   timeouts:
                     description: (Attributes) (see below for nested schema)

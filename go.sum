@@ -279,8 +279,8 @@ github.com/redpanda-data/common-go/rpsr v0.1.2 h1:DThUeyfBH8fkL9WoP1sEbRhT2NVV22
 github.com/redpanda-data/common-go/rpsr v0.1.2/go.mod h1:2j2416onosg5FKaKz52NooRE+q/9EJqQn0kyTcTXWHc=
 github.com/redpanda-data/redpanda/src/go/rpk v0.0.0-20250324141452-c979dc730ef3 h1:0mGz2UMinuH5g196WT23uV7emE/dkLKI7hpbuSvgFRs=
 github.com/redpanda-data/redpanda/src/go/rpk v0.0.0-20250324141452-c979dc730ef3/go.mod h1:Br5+E9p7b/IpytRwVC5NW/f2PfJxpl0th5V8nY8ri+Q=
-github.com/redpanda-data/terraform-provider-redpanda v1.3.5 h1:Z9PDy+kzEz4G86l+VthF4LKFqUNjs56K7FYAWZitid0=
-github.com/redpanda-data/terraform-provider-redpanda v1.3.5/go.mod h1:LluLEySmJk53zrkubTzG0E19xqG6NCmIjNjZMnwHYg4=
+github.com/redpanda-data/terraform-provider-redpanda v1.4.2 h1:sFiwIskH6CppOyPV1pd6vVTEC4BIIhSYWyYls5KwYF0=
+github.com/redpanda-data/terraform-provider-redpanda v1.4.2/go.mod h1:LluLEySmJk53zrkubTzG0E19xqG6NCmIjNjZMnwHYg4=
 github.com/rogpeppe/go-internal v1.13.1 h1:KvO1DLK/DRN07sQ1LQKScxyZJuNnedQ5/wKSR38lUII=
 github.com/rogpeppe/go-internal v1.13.1/go.mod h1:uMEvuHeurkdAXX61udpOXGD/AzZDWNMNyH2VO9fmH0o=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
