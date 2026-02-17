@@ -6,13 +6,13 @@ import (
 
 var terraformPluginFrameworkExternalNameConfigs = map[string]config.ExternalName{
 	"redpanda_acl":                 config.IdentifierFromProvider,
-	"redpanda_cluster":             config.IdentifierFromProvider,
-	"redpanda_network":             config.IdentifierFromProvider,
-	"redpanda_resource_group":      config.FrameworkResourceWithComputedIdentifier("id", "FC32AC7C-64FC-4D1A-BABC-D37B865C143B"),
+	"redpanda_cluster":             config.FrameworkResourceWithComputedIdentifier("id", "abcdefghij0123456789"),
+	"redpanda_network":             config.FrameworkResourceWithComputedIdentifier("id", "abcdefghij0123456789"),
+	"redpanda_resource_group":      config.FrameworkResourceWithComputedIdentifier("id", "AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE"),
 	"redpanda_role_assignment":     config.IdentifierFromProvider,
 	"redpanda_schema":              config.IdentifierFromProvider,
 	"redpanda_schema_registry_acl": config.IdentifierFromProvider,
-	"redpanda_serverless_cluster":  config.FrameworkResourceWithComputedIdentifier("id", "a1b2c3d4e5f6g7h8i9j0"),
+	"redpanda_serverless_cluster":  config.FrameworkResourceWithComputedIdentifier("id", "abcdefghij0123456789"),
 	"redpanda_topic":               config.IdentifierFromProvider,
 	"redpanda_user":                config.IdentifierFromProvider,
 }
