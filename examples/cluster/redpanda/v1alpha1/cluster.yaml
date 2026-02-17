@@ -1,0 +1,69 @@
+apiVersion: redpanda.redpanda.crossplane.io/v1alpha1
+kind: Cluster
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/cluster
+    uptest.upbound.io/timeout: "12600" # 90m creation + 90m deletion + 30m buffer
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    allowDeletion: true
+    cloudProviderSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    clusterTypeSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    connectionType: public
+    name: example-cluster
+    networkIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    regionSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    resourceGroupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+    throughputTier: tier-1-aws-v3-arm
+    zones:
+    - usw2-az1
+    - usw2-az2
+    - usw2-az3
+
+---
+
+apiVersion: redpanda.redpanda.crossplane.io/v1alpha1
+kind: Network
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/cluster
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    cidrBlock: 10.0.0.0/20
+    cloudProvider: aws
+    clusterType: dedicated
+    name: example-network
+    region: us-west-2
+    resourceGroupIdSelector:
+      matchLabels:
+        testing.upbound.io/example-name: example
+
+---
+
+apiVersion: resource.redpanda.crossplane.io/v1alpha1
+kind: Group
+metadata:
+  annotations:
+    meta.upbound.io/example-id: redpanda/v1alpha1/cluster
+  labels:
+    testing.upbound.io/example-name: example
+  name: example
+spec:
+  forProvider:
+    name: example-resource-group
