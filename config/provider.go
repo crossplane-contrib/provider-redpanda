@@ -2,6 +2,7 @@ package config
 
 import (
 	// Note(turkenh): we are importing this to embed provider schema document
+	"context"
 	_ "embed"
 
 	ujconfig "github.com/crossplane/upjet/v2/pkg/config"
@@ -26,7 +27,7 @@ func GetProvider() *ujconfig.Provider {
 		ujconfig.WithRootGroup("redpanda.crossplane.io"),
 		ujconfig.WithIncludeList(nil),
 		ujconfig.WithTerraformPluginFrameworkIncludeList(ExternalNameConfigured()),
-		ujconfig.WithTerraformPluginFrameworkProvider(redpanda.New(nil, "prod", "v1.3.5")()),
+		ujconfig.WithTerraformPluginFrameworkProvider(redpanda.New(context.Background(), "prod", "v1.3.5")()),
 		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithDefaultResourceOptions(
@@ -49,7 +50,7 @@ func GetProviderNamespaced() *ujconfig.Provider {
 		ujconfig.WithRootGroup("redpanda.m.crossplane.io"),
 		ujconfig.WithIncludeList(nil),
 		ujconfig.WithTerraformPluginFrameworkIncludeList(ExternalNameConfigured()),
-		ujconfig.WithTerraformPluginFrameworkProvider(redpanda.New(nil, "prod", "v1.3.5")()),
+		ujconfig.WithTerraformPluginFrameworkProvider(redpanda.New(context.Background(), "prod", "v1.3.5")()),
 		ujconfig.WithReferenceInjectors([]ujconfig.ReferenceInjector{reference.NewInjector(modulePath)}),
 		ujconfig.WithFeaturesPackage("internal/features"),
 		ujconfig.WithDefaultResourceOptions(

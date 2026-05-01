@@ -1,12 +1,19 @@
+// Package clients provides Terraform setup functions for the Redpanda provider.
 package clients
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
+	"strings"
+	"sync"
+	"time"
 
+	"github.com/crossplane/crossplane-runtime/v2/pkg/logging"
 	"github.com/crossplane/crossplane-runtime/v2/pkg/resource"
 	"github.com/pkg/errors"
 	"github.com/redpanda-data/terraform-provider-redpanda/redpanda"
+	"github.com/redpanda-data/terraform-provider-redpanda/redpanda/cloud"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
@@ -19,6 +26,7 @@ import (
 const (
 	clientID     = "client_id"
 	clientSecret = "client_secret"
+	accessToken  = "access_token"
 )
 
 const (
@@ -28,37 +36,123 @@ const (
 	errTrackUsage           = "cannot track ProviderConfig usage"
 	errExtractCredentials   = "cannot extract credentials"
 	errUnmarshalCredentials = "cannot unmarshal redpanda credentials as JSON"
+	errMissingCredentials   = "credentials must contain client_id and client_secret"
 )
 
-// TerraformSetupBuilder builds Terraform a terraform.SetupFn function which
-// returns Terraform provider setup configuration
-func TerraformSetupBuilder() terraform.SetupFn {
-	return func(ctx context.Context, client client.Client, mg resource.Managed) (terraform.Setup, error) {
+type tokenFetcher func(ctx context.Context, clientID, clientSecret string) (string, error)
+
+// tokenCache caches access tokens by clientID. get returns an error if the
+// cached token is missing or within a minute of expiry, so callers refetch
+// before the token can fail mid-request.
+type tokenCache struct {
+	mu     sync.RWMutex
+	tokens map[string]string
+}
+
+func (c *tokenCache) get(id string) (string, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	token, ok := c.tokens[id]
+	if !ok {
+		return "", errors.New("no cached token")
+	}
+	exp, err := parseTokenExpiry(token)
+	if err != nil {
+		return "", err
+	}
+	if time.Until(exp) <= time.Minute {
+		return "", errors.New("token within 1m of expiry")
+	}
+
+	return token, nil
+}
+
+func (c *tokenCache) set(id, token string) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.tokens[id] = token
+}
+
+func parseTokenExpiry(token string) (time.Time, error) {
+	parts := strings.Split(token, ".")
+	if len(parts) != 3 {
+		return time.Time{}, errors.New("not a JWT")
+	}
+	payload, err := base64.RawURLEncoding.DecodeString(parts[1])
+	if err != nil {
+		return time.Time{}, errors.Wrap(err, "decode JWT payload")
+	}
+	var claims struct {
+		Exp int64 `json:"exp"`
+	}
+	if err := json.Unmarshal(payload, &claims); err != nil {
+		return time.Time{}, errors.Wrap(err, "unmarshal JWT claims")
+	}
+	return time.Unix(claims.Exp, 0), nil
+}
+
+// credentialExtractor extracts the clientID and clientSecret for a managed resource.
+// It is injectable so that buildSetupFn can be tested without a real K8s cluster.
+type credentialExtractor func(ctx context.Context, c client.Client, mg resource.Managed) (id, secret string, err error)
+
+// TerraformSetupBuilder builds a terraform.SetupFn that caches access tokens to
+// avoid generating a new token on every reconcile loop.
+func TerraformSetupBuilder(log logging.Logger) (terraform.SetupFn, error) {
+	endpoint, err := cloud.EndpointForEnv("prod")
+	if err != nil {
+		return nil, errors.Wrap(err, "cannot resolve prod endpoint")
+	}
+	cache := &tokenCache{tokens: make(map[string]string)}
+	fetch := func(ctx context.Context, id, secret string) (string, error) {
+		return cloud.RequestToken(ctx, endpoint, id, secret)
+	}
+	return buildSetupFn(log, cache, fetch, extractCredentials), nil
+}
+
+// extractCredentials reads the clientID and clientSecret from the ProviderConfig
+// referenced by the managed resource.
+func extractCredentials(ctx context.Context, c client.Client, mg resource.Managed) (string, string, error) {
+	pcSpec, err := resolveProviderConfig(ctx, c, mg)
+	if err != nil {
+		return "", "", errors.Wrap(err, "cannot resolve provider config")
+	}
+	data, err := resource.CommonCredentialExtractor(ctx, pcSpec.Credentials.Source, c, pcSpec.Credentials.CommonCredentialSelectors)
+	if err != nil {
+		return "", "", errors.Wrap(err, errExtractCredentials)
+	}
+	creds := map[string]string{}
+	if err := json.Unmarshal(data, &creds); err != nil {
+		return "", "", errors.Wrap(err, errUnmarshalCredentials)
+	}
+	if creds[clientID] == "" || creds[clientSecret] == "" {
+		return "", "", errors.New(errMissingCredentials)
+	}
+	return creds[clientID], creds[clientSecret], nil
+}
+
+// buildSetupFn constructs a terraform.SetupFn using injected dependencies for
+// the token cache, fetcher, and credential extractor.
+func buildSetupFn(log logging.Logger, cache *tokenCache, fetch tokenFetcher, extract credentialExtractor) terraform.SetupFn {
+	return func(ctx context.Context, c client.Client, mg resource.Managed) (terraform.Setup, error) {
 		ps := terraform.Setup{}
 
-		pcSpec, err := resolveProviderConfig(ctx, client, mg)
+		id, secret, err := extract(ctx, c, mg)
 		if err != nil {
-			return terraform.Setup{}, errors.Wrap(err, "cannot resolve provider config")
+			return ps, err
 		}
 
-		data, err := resource.CommonCredentialExtractor(ctx, pcSpec.Credentials.Source, client, pcSpec.Credentials.CommonCredentialSelectors)
+		token, err := cache.get(id)
 		if err != nil {
-			return ps, errors.Wrap(err, errExtractCredentials)
-		}
-		creds := map[string]string{}
-		if err := json.Unmarshal(data, &creds); err != nil {
-			return ps, errors.Wrap(err, errUnmarshalCredentials)
+			log.Debug("fetching new access token", "clientID", id, "reason", err.Error())
+			token, err = fetch(ctx, id, secret)
+			if err != nil {
+				return ps, errors.Wrap(err, "cannot fetch access token")
+			}
+			cache.set(id, token)
 		}
 
-		// Set credentials in Terraform provider configuration.
-		ps.Configuration = map[string]any{}
-		if v, ok := creds[clientID]; ok {
-			ps.Configuration[clientID] = v
-		}
-		if v, ok := creds[clientSecret]; ok {
-			ps.Configuration[clientSecret] = v
-		}
-		ps.FrameworkProvider = redpanda.New(nil, "prod", "v1.3.5")()
+		ps.Configuration = map[string]any{accessToken: token}
+		ps.FrameworkProvider = redpanda.New(ctx, "prod", "v1.3.5")()
 		return ps, nil
 	}
 }

@@ -145,6 +145,9 @@ func main() {
 	metrics.Registry.MustRegister(metricRecorder)
 	metrics.Registry.MustRegister(stateMetrics)
 
+	setupFn, err := clients.TerraformSetupBuilder(log)
+	kingpin.FatalIfError(err, "Cannot build Terraform setup function")
+
 	clusterOpts := tjcontroller.Options{
 		Options: xpcontroller.Options{
 			Logger:                  log,
@@ -162,7 +165,7 @@ func main() {
 		// use the following WorkspaceStoreOption to enable the shared gRPC mode
 		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
 		WorkspaceStore:        terraform.NewWorkspaceStore(log),
-		SetupFn:               clients.TerraformSetupBuilder(),
+		SetupFn:               setupFn,
 		OperationTrackerStore: tjcontroller.NewOperationStore(log),
 		StartWebhooks:         *certsDir != "",
 	}
@@ -184,7 +187,7 @@ func main() {
 		// use the following WorkspaceStoreOption to enable the shared gRPC mode
 		// terraform.WithProviderRunner(terraform.NewSharedProvider(log, os.Getenv("TERRAFORM_NATIVE_PROVIDER_PATH"), terraform.WithNativeProviderArgs("-debuggable")))
 		WorkspaceStore:        terraform.NewWorkspaceStore(log),
-		SetupFn:               clients.TerraformSetupBuilder(),
+		SetupFn:               setupFn,
 		OperationTrackerStore: tjcontroller.NewOperationStore(log),
 		StartWebhooks:         *certsDir != "",
 	}
